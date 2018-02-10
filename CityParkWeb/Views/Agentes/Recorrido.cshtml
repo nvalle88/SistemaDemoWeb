@@ -1,0 +1,154 @@
+﻿@model CityParkWeb.Entities.Negocio.Agente
+@{
+    ViewBag.Title = "Home";
+}
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery-3.2.1.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-1.11.1.js"></script>
+<script src="~/Scripts/jquery-1.11.1.min.js"></script>
+<script src="~/Scripts/jquery-2.1.1.js"></script>
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+
+<style>
+    #map_container {
+        position: relative;
+    }
+
+    #map {
+        height: 0;
+        overflow: hidden;
+        padding-bottom: 30.25%;
+        padding-top: 10px;
+        position: relative;
+    }
+</style>
+<div id="content">
+    @Html.HiddenFor(model => model.Id)
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="well">
+                <legend>Vendedor: @Model.Nombre</legend>
+                <section id="widget-grid" class="">
+                    <div class="row">
+                        <article class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
+                                <header draggable="true">
+                                    <span class="widget-icon"> <i class="fa fa-road"></i> </span>
+                                    <h2>Recorrido del vendedor...</h2>
+                                </header>
+                                <div>
+                                    <div class="jarviswidget-editbox">
+                                    </div>
+                                    <div class="widget-body no-padding">
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div id="map_container"></div>
+                                                    <div id="map"></div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+                <footer>
+                    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-default" })
+                </footer>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section pagespecific {
+
+<script type="text/javascript">
+
+    
+</script>
+
+
+    <script type="text/javascript">
+
+        var arreglo = [];
+        $(document).ready(function () {
+
+            if ($("#nombre").val() != "") {
+                $('#content').waitMe({
+                    effect: 'roundBounce',
+                    text: 'Procesando datos, por favor espere...',
+                    bg: 'rgba(255, 255, 255, 0.7)',
+                    color: '#ef4c0c'
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("RecorridoDiario")',
+                    dataType: 'json',
+                    data: { id: $("#Id").val() },
+                    success: function (data) {
+                        if (data == false) {
+                            alert("El vendedor no ha realizado ninguna visita el día de hoy...");
+                            window.location.href = '@Url.Action("Index")';
+                        }
+                        arreglo = data;
+
+                    }, complete: function (data) {
+                        var path;
+
+                        var Cord = [];
+                        for (var i = 0; i < arreglo.length; i++) {
+                            var a = arreglo[i].lat;
+                            var b = arreglo[i].lng;
+                            var Cordenadas = { lat: a, lng: b };
+                            Cord.push(Cordenadas);
+                        }
+                            var map = new google.maps.Map(document.getElementById('map'), {
+                                zoom: 15,
+                                center: { lat: Cord[0].lat, lng: Cord[0].lng }
+
+                            });
+
+                            var sectorLocalizacion = new google.maps.Polygon({
+                                paths: Cord,
+                                strokeColor: '#0000FF',
+                                strokeOpacity: 0.8,
+                                strokeWeight: 4,
+                                fillColor: '#0000FF',
+                                fillOpacity: 0.35
+                            });
+                            sectorLocalizacion.setMap(map);
+
+                            $("#content").waitMe("hide");
+
+                    },
+
+                    error: function (ex) {
+                        alert('Failed to retrieve data.' + ex);
+                    }
+                });
+            }
+            else {
+                alert("Tiene que introducir el nombre del sector")
+                return false;
+            }
+
+        });
+
+
+
+
+    </script>
+
+   
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7xHSOffrWxVEax1kniS5-OxrWCuF4JU&libraries=drawing&callback=initMap"
+              async defer></script>
+
+}

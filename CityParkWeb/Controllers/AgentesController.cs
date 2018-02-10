@@ -1,8 +1,6 @@
-﻿using CityParkWeb.Entities.Helpers;
-using CityParkWeb.Entities.ModeloTranferencia;
+﻿using CityParkWeb.Entities.ModeloTranferencia;
 using CityParkWeb.Entities.Negocio;
 using CityParkWeb.Entities.Utils;
-using CityParkWeb.Seguridad;
 using CityParkWeb.Services.Servicios;
 using Newtonsoft.Json;
 using System;
@@ -13,7 +11,7 @@ using System.Web.Mvc;
 
 namespace CityParkWeb.Controllers
 {
-    [Authorize]
+
     public class AgentesController : Controller
     {
         // GET: Agentes
@@ -22,117 +20,52 @@ namespace CityParkWeb.Controllers
             return View();
         }
 
-        private async Task<List<Sector>> obtenerSectoresPorEmpresa()
+
+        public class PuntosRequest
         {
-            IdentityPersonalizado ci = (IdentityPersonalizado)HttpContext.User.Identity;
-            string nombreUsuario = ci.Identity.Name;
-            var administrador = new Administrador { Nombre = nombreUsuario };
-            administrador = await ProveedorAutenticacion.GetUser(administrador);
-
-            var empresa = new Empresa { EmpresaId = administrador.EmpresaId };
-
-            var listaSectores = await ApiServicio.Listar<Sector>(empresa,
-                                                             new Uri(WebApp.BaseAddress),
-                                                             "api/Sectors/GetSectoresPorEmpresa");
-            return listaSectores;
+            public double lat { get; set; }
+            public double lng { get; set; }
         }
 
-
-        public async Task<ActionResult> Edit(int id)
+        public async Task<JsonResult> RecorridoDiario(int Id)
         {
-
-            if (id<=0)
+            if (Id <= 0)
             {
-              return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-           var agente = new Agente { AgenteId = id };
-
-           var agenteRequest = await ApiServicio.ObtenerElementoAsync1<Response>(agente,
-                                                             new Uri(WebApp.BaseAddress),
-                                                             "api/Agentes/GetAgente");
-            if (!agenteRequest.IsSuccess)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Json(false);
             }
 
-            var result = JsonConvert.DeserializeObject<Agente>(agenteRequest.Result.ToString());
-            ViewBag.SectorId = new SelectList(await obtenerSectoresPorEmpresa(), "SectorId", "NombreSector", result.SectorId);
+            var sector = new Agente { Id = Id };
 
-            return View(result);
+            var response = await ApiServicio.Listar<Visita>(sector, new Uri(WebApp.BaseAddress), "api/Visitas/GetVisitasDiarias");
+
+            if (response == null || response.Count==0)
+            {
+                return Json(false);
+            }
+
+            var listaRequest = new List<PuntosRequest>();
+
+            foreach (var item in response)
+            {
+                listaRequest.Add(new PuntosRequest { lat = (Double)item.Cliente.Lat, lng = (Double)item.Cliente.Lon });
+            }
+
+            return Json(listaRequest);
         }
 
-
-        [HttpPost]
-        public async Task<ActionResult> Edit(Agente agente)
-        {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.SectorId = new SelectList(await obtenerSectoresPorEmpresa(), "SectorId", "NombreSector", agente.SectorId);
-                return View(agente);
-            }
-            
-            var agenteRequest = await ApiServicio.EditarAsync<Response>(agente,
-                                                              new Uri(WebApp.BaseAddress),
-                                                              "api/Agentes/EditAgente");
-            if (!agenteRequest.IsSuccess)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return RedirectToAction("Index");
-        }
-
-
-
-        public async Task<ActionResult> Delete(int id)
+        private async Task<List<Agente>> ObtenerAgentes()
         {
 
-            var agente = new Agente { AgenteId = id };
-            var response = await ApiServicio.EliminarAsync<Response>(agente,
+            var listaAgentes = await ApiServicio.Listar<Agente>(
                                                              new Uri(WebApp.BaseAddress),
-                                                             "api/Agentes/DeleteAgente");
-
-            if (!response.IsSuccess)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        public async Task<ActionResult> ResetPassword(int id)
-        {
-
-            var agente = new Agente { AgenteId = id };
-            var response = await ApiServicio.EditarAsync<Response>(agente,
-                                                             new Uri(WebApp.BaseAddress),
-                                                             "api/Agentes/ResetPassword");
-
-            if (!response.IsSuccess)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        private async Task<List<AgenteRequest>> ObtenerAgentesPorEmpresa()
-        {
-            IdentityPersonalizado ci = (IdentityPersonalizado)HttpContext.User.Identity;
-            string nombreUsuario = ci.Identity.Name;
-            var administrador = new Administrador { Nombre = nombreUsuario };
-            administrador = await ProveedorAutenticacion.GetUser(administrador);
-
-            var empresa = new Empresa { EmpresaId = administrador.EmpresaId };
-
-            var listaAgentes = await ApiServicio.Listar<AgenteRequest>(empresa,
-                                                             new Uri(WebApp.BaseAddress),
-                                                             "api/Agentes/GetAgentesPorEmpresa");
+                                                             "api/Agentes/GetAgentes");
             return listaAgentes;
         }
 
+
         public async Task<ActionResult> Index()
         {
-            var listaAgentes = await ObtenerAgentesPorEmpresa();
+            var listaAgentes = await ObtenerAgentes();
             if (listaAgentes == null)
             {
                 return View(new List<AgenteRequest>());
@@ -141,40 +74,24 @@ namespace CityParkWeb.Controllers
         }
 
 
-      
-        public async Task<ActionResult> Create()
+        public async Task<ActionResult> Recorrido(int id)
         {
-            ViewBag.SectorId = new SelectList(await obtenerSectoresPorEmpresa(), "SectorId", "NombreSector");
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Create(Agente agente)
-        {
-            if (!ModelState.IsValid)
+            if (id <= 0)
             {
-                ViewBag.SectorId = new SelectList(await obtenerSectoresPorEmpresa(), "SectorId", "NombreSector", agente.SectorId);
-                return View(agente);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            IdentityPersonalizado ci = (IdentityPersonalizado)HttpContext.User.Identity;
-            string nombreUsuario = ci.Identity.Name;
-            var administrador = new Administrador { Nombre = nombreUsuario };
-            administrador = await ProveedorAutenticacion.GetUser(administrador);
-            var codificar= CodificarHelper.SHA512(new Codificar { Entrada =agente.Nombre });
-            agente.Contrasena = codificar.Salida;
-            agente.EmpresaId = administrador.EmpresaId;
+            var agente = new Agente { Id = id };
 
-            var response = await ApiServicio.InsertarAsync(agente,
-                                                            new Uri(WebApp.BaseAddress),
-                                                            "api/Agentes/CreateAgente");
-
-            
-            if (!response.IsSuccess)
+            var sectorRequest = await ApiServicio.ObtenerElementoAsync1<Response>(agente,
+                                                              new Uri(WebApp.BaseAddress),
+                                                              "api/Agentes/GetAgente");
+            if (!sectorRequest.IsSuccess)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest); 
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            return RedirectToAction("Index","Agentes");
+            var result = JsonConvert.DeserializeObject<Agente>(sectorRequest.Result.ToString());
+            return View(result);
         }
     }
 }

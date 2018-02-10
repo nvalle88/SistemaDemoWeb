@@ -37,9 +37,9 @@
 </head>
 <body class="@ViewBag.PageClass @Settings.CurrentTheme">
     @{ Html.RenderPartial("_Header", RenderSection("topright", false)); }
-    @{ Html.RenderPartialIf("_Aside", User.Identity.IsAuthenticated); }
+    @{ Html.RenderPartialIf("_Aside", true); }
     <div id="main" role="main">
-        @{ Html.RenderPartialIf("_Ribbon", User.Identity.IsAuthenticated); }
+        @{ Html.RenderPartialIf("_Ribbon",true); }
         @RenderBody()
     </div>
     @if (true)

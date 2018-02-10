@@ -33,11 +33,8 @@
 
             var pos = { lat: livePositionRequest.Lat, lng: livePositionRequest.Lon };
 
-            if (empresa == livePositionRequest.EmpresaId) {
                 var marker;
                 if (markersAgentes.length == 0) {
-
-
 
                     var marker = new google.maps.Marker({
                         position: pos,
@@ -129,8 +126,6 @@
 
 
                 }
-
-            }
         };
 
         function existeAgente(agenteId) {
@@ -193,6 +188,7 @@
                 markersDelete[i].setMap(map);
             }
         };
+
         function myFunction() {
             myVar = setInterval(alertFunc, 5000);
         };
@@ -206,6 +202,7 @@
         function clearMarkers() {
             setMapOnAll(null);
         };
+
         $.connection.hub.start().done(function () {
             chatInput.keydown(function (e) {
 

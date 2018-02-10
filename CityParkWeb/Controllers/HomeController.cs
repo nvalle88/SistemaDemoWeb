@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace CityParkWeb.Controllers
 {
-   [Authorize]
+ 
     public class HomeController : Controller
     {
         // GET: home/index

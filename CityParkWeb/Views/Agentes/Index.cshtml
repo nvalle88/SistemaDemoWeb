@@ -1,4 +1,4 @@
-﻿@model List<CityParkWeb.Entities.ModeloTranferencia.AgenteRequest>
+﻿@model List<CityParkWeb.Entities.Negocio.Agente>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,9 +14,6 @@
 
 
 <div id="content">
-    <p></p>
-     @Html.ActionLink("Nuevo agente", "Create", "", new { @class = "btn btn-default" })
-    <p> </p>
     <section id="widget-grid" class="">
         <div class="row">
             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -37,28 +34,8 @@
                                             @Html.DisplayNameFor(model => model.FirstOrDefault().Nombre)
                                         </th>
                                         <th data-class="expand">
-                                            <i class="icon-append fa fa-user"></i>
-                                            @Html.DisplayNameFor(model => model.FirstOrDefault().Apellido)
-                                        </th>
-                                        <th data-class="expand">
-                                            <i class="icon-append fa fa-home"></i>
-                                            @Html.DisplayNameFor(model => model.FirstOrDefault().NombreSector)
-                                        </th>
-                                        <th data-class="expand">
-                                            <i class="icon-append fa fa-home"></i>
-                                            @Html.DisplayNameFor(model => model.FirstOrDefault().RazonSocial)
-                                        </th>
-                                        <th data-class="expand">
-                                            <i class="icon-append fa fa-map-marker"></i>
-                                            @Html.DisplayNameFor(model => model.FirstOrDefault().Direccion)
-                                        </th>
-                                        <th data-class="expand">
-                                            <i class="icon-append fa fa-map-marker"></i>
-                                            @Html.DisplayNameFor(model => model.FirstOrDefault().Ruc)
-                                        </th>
-                                        <th>
-                                            <i class="icon-append fa fa-cog"></i>
-                                            Opciones
+                                            <i class="icon-append fa fa-road"></i>
+                                           Opciones
                                         </th>
                                     </tr>
                                 </thead>
@@ -70,24 +47,7 @@
                                                 @Html.DisplayFor(modelItem => item.Nombre)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Apellido)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.NombreSector)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.RazonSocial)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Direccion)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Ruc)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("Resetear contraseña", "ResetPassword", new { id = item.AgenteId }, new { onclick = "return confirm('Desea resetear la contraseña... ?');" }) |
-                                                @Html.ActionLink("Editar", "Edit", new { id = item.AgenteId }) |
-                                                @Html.ActionLink("Eliminar", "Delete", new { id = item.AgenteId }, new { onclick = "return confirm('Desea eliminar el agente de forma permanente... ?');" })
+                                                @Html.ActionLink("Detalle", "Recorrido", new { id = item.Id })
                                             </td>
                                         </tr>
                                     }

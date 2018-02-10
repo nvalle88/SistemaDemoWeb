@@ -12,18 +12,15 @@ namespace CityParkWeb.Entities.Negocio
     using System;
     using System.Collections.Generic;
     
-    public partial class Agente
+    public partial class Visita
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Agente()
-        {
-            this.Visita = new HashSet<Visita>();
-        }
-    
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public Nullable<int> IdCliente { get; set; }
+        public Nullable<int> IdAgente { get; set; }
+        public Nullable<System.DateTime> Fecha { get; set; }
+        public string Observacion { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Visita> Visita { get; set; }
+        public virtual Agente Agente { get; set; }
+        public virtual Cliente Cliente { get; set; }
     }
 }
