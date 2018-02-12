@@ -108,13 +108,21 @@
                         var directionsDisplay = new google.maps.DirectionsRenderer;
                         //waypoints to add
                         var waypts = [];
+                        var lat_lng = [];
 
-                         for (i = 0; i < arreglo.length; i++) {
+                        for (i = 0; i < arreglo.length; i++) {
                             var a = arreglo[i].lat;
                             var b = arreglo[i].lng;
                             var Cordenadas = { lat: a, lng: b };
+                            lat_lng.push(Cordenadas);
+                        }
+
+                         for (i = 1; i < arreglo.length; i++) {
+                            var a = arreglo[i].lat;
+                            var b = arreglo[i].lng;
+                            var Cordenadas1 = { lat: a, lng: b };
                             //lat_lng.push(Cordenadas);
-                            var way = { location: { lat: Cordenadas.lat, lng: Cordenadas.lng }, stopover: true };
+                            var way = { location: { lat: Cordenadas1.lat, lng: Cordenadas1.lng }, stopover: true };
                             waypts.push(way);
                         }
                          //waypts = [{ location: { lat: 41.94, lng: 1.56 }, stopover: true }, { location: { lat: 41.99, lng: 1.53 }, stopover: true }, { location: { lat: 41.98, lng: 1.52 }, stopover: true }];
@@ -130,8 +138,8 @@
                         // set the new
                         //new Array(waypts[0].location.lat,waypts[0].location.lng)
                         directionsService.route({
-                            origin: { lat: waypts[0].location.lat, lng: waypts[0].location.lng },//db waypoint start
-                            destination: { lat: waypts[waypts.length - 1].location.lat, lng: waypts[waypts.length - 1].location.lng },//db waypoint end
+                            origin: { lat: lat_lng[0].lat, lng: lat_lng[0].lng },//db waypoint start
+                            destination: { lat: lat_lng[waypts.length].lat, lng: lat_lng[waypts.length].lng },//db waypoint end
                             waypoints: waypts,
                             travelMode: google.maps.TravelMode.WALKING
                         }, function (response, status) {
