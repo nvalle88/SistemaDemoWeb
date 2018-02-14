@@ -25,6 +25,9 @@ namespace CityParkWeb.Controllers
         {
             public double lat { get; set; }
             public double lng { get; set; }
+            public DateTime? Fecha { get; set; }
+            public string NombreUsuario { get; set; }
+
         }
 
         public async Task<JsonResult> RecorridoDiario(int Id)
@@ -47,7 +50,7 @@ namespace CityParkWeb.Controllers
 
             foreach (var item in response)
             {
-                listaRequest.Add(new PuntosRequest { lat = (Double)item.Cliente.Lat, lng = (Double)item.Cliente.Lon });
+                listaRequest.Add(new PuntosRequest { lat = (Double)item.Cliente.Lat, lng = (Double)item.Cliente.Lon ,Fecha=item.Fecha,NombreUsuario=item.Cliente.Nombre});
             }
 
             return Json(listaRequest);

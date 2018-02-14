@@ -25,59 +25,81 @@
         position: relative;
     }
 </style>
+
 <div id="content">
     @Html.HiddenFor(model => model.Id)
     <div class="row">
-        <div class="col-sm-12">
-            <div class="well">
-                <legend>Vendedor: @Model.Nombre</legend>
-                <section id="widget-grid" class="">
-                    <div class="row">
-                        <article class="col-sm-12 col-md-12 col-lg-12">
-                            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
-                                <header draggable="true">
-                                    <span class="widget-icon"> <i class="fa fa-road"></i> </span>
-                                    <h2>Recorrido del vendedor...</h2>
-                                </header>
-                                <div>
-                                    <div class="jarviswidget-editbox">
-                                    </div>
-                                    <div class="widget-body no-padding">
-                                        <fieldset>
-                                            <div class="row">
+        <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+            <h1 class="page-title txt-color-blueDark">
+                    <i class="fa-fw fa fa-user"></i>
+                    Vendedor:
+                    <span>
+                        @Model.Nombre
+                    </span>
+            </h1>
+        </div>
 
-                                                <div class="col-sm-12">
-                                                    <div id="map_container"></div>
-                                                    
-                                                    <div id="map"></div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </section>
-                <footer>
-                    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-default" })
-                </footer>
-            </div>
-
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+            <a data-toggle="modal" href="#myModal" class="btn btn-success btn-lg pull-right header-btn hidden-mobile"><i class="fa fa-circle-arrow-up fa-lg"></i> Launch form modal</a>
         </div>
     </div>
+    <div class="alert alert-block alert-info">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+        <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Informaci&oacute;n</h4>
+        <p>
+            Usted puede observar la ruta del vendedor en el mapa as&iacute; como el detalle de cada segmento!
+        </p>
+    </div>
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
+                    <header draggable="true">
+                        <span class="widget-icon"> <i class="fa fa-road"></i> </span>
+                        <h2>Recorrido del vendedor...</h2>
+                    </header>
+                    <div>
+                        <div class="jarviswidget-editbox">
+                        </div>
+                        <div class="widget-body no-padding">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="map_container"></div>
+                                        <div id="map"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
+                    <header draggable="true">
+                        <span class="widget-icon"> <i class="fa fa-road"></i> </span>
+                        <h2>Detalle...</h2>
+                    </header>
+                    <div>
+                        <div class="jarviswidget-editbox">
+                        </div>
+                        <div class="widget-body no-padding">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="directions-panel"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
 </div>
-
-
 @section pagespecific {
-
-<script type="text/javascript">
-
-    
-</script>
-
-<script>
-
+    <script type="text/javascript">
+    </script>
+    <script>
     var arreglo = [];
         $(document).ready(function () {
 
@@ -145,8 +167,43 @@
                         }, function (response, status) {
                             if (status === google.maps.DirectionsStatus.OK) {
                                 directionsDisplay.setDirections(response);
+
+                                var step = 1;
+
+                                var route = response.routes[0];
+                                var summaryPanel = document.getElementById('directions-panel');
+                                summaryPanel.innerHTML = '';
+                                // For each route, display summary information.
+                                for (var i = 0; i < route.legs.length; i++) {
+                                    var routeSegment = i + 1;
+                                    
+                                        var infowindow2 = new google.maps.InfoWindow();
+                                        var localTime ;
+                                        localTime = moment(arreglo[i].Fecha).format('hh:mm:ss A');
+                                        //localTime1 = moment(arreglo[i+1].Fecha).format('hh:mm:ss A');
+                                        infowindow2.setContent(
+                                            "<b>&nbsp&nbsp   Visita #: " + routeSegment + "</b><br>" +
+                                            "<b>&nbsp&nbsp&nbsp&nbsp  Cliente:</b> " + arreglo[i].NombreUsuario + "<br>" +
+                                            "<b>&nbsp&nbsp&nbsp&nbsp  Fecha:</b> " + localTime 
+                                                               );
+                                        infowindow2.setPosition(route.legs[i].start_location);
+                                        infowindow2.open(map);
+
+                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp  Segmento: ' + routeSegment + '</b><br>';
+                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Cliente:</b> ' + arreglo[i].NombreUsuario + '<br>';
+                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Fecha:</b> ' + localTime + '<br>';
+                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Desde:</b> ' + route.legs[i].start_address + '<br>';
+                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Hacia:</b> ' + route.legs[i].end_address + '<br>';
+                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Distancia recorrida:</b> ' + route.legs[i].distance.text + '<br>';
+                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Tiempo aproximado:</b> ' + route.legs[i].duration.text + '<br><br>';
+                                        summaryPanel.innerHTML += ' <legend></legend>';
+                                    
+                                    
+
+                                   
+                                }
                             } else {
-                                window.alert('Ha fallat la comunicació amb el mapa a causa de: ' + status);
+                                window.alert('Ha fallado la comunicació amb el mapa a causa de: ' + status);
                             }
                         });
 
@@ -229,19 +286,19 @@
 
 
                         //var path;
-                       
+
                         //var map = new google.maps.Map(document.getElementById('map'), {
                         //    zoom: 15,
                         //    center: { lat: -0.174343345485331, lng: -78.4831896311008 }
                         //});
-                       
+
                         //var Cord = [];
                         //for (var i = 0; i < arreglo.length; i++) {
                         //    var a = arreglo[i].lat;
                         //    var b = arreglo[i].lng;
                         //    var Cordenadas = { lat: a, lng: b };
                         //    Cord.push(Cordenadas);
-                           
+
                         //}
                         //var waypts = [];
                         //for (var i = 0; i < Cord.length; i++) {
@@ -253,7 +310,7 @@
                         //    directionsService.route({
                         //        origin: start,
                         //        destination: end,
-                                
+
                         //        travelMode: 'DRIVING'
                         //    }, function (response, status) {
                         //        if (status === 'OK') {
@@ -281,7 +338,7 @@
 
 
     //function initMap() {
-        
+
     //    directionsDisplay.setPanel(document.getElementById('right-panel'));
 
     //    var control = document.getElementById('floating-panel');
@@ -310,17 +367,17 @@
             }
         });
     }
-</script>
+    </script>
     <script type="text/javascript">
 
-        
+
 
 
 
 
     </script>
 
-   
+
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7xHSOffrWxVEax1kniS5-OxrWCuF4JU&libraries=drawing&callback=initMap"
               async defer></script>
