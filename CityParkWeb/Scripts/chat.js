@@ -49,9 +49,9 @@
                     var contentString = '<div id="content">' +
                         '<div id="siteNotice">' +
                         '</div>' +
-                        '<h4 id="firstHeading" class="firstHeading">City Park</h1>' +
+                        '<h4 id="firstHeading" class="firstHeading">Digital Strategy</h1>' +
                         '<div id="bodyContent">' +
-                        '<p><b>Nombre del Agente:</b>' + livePositionRequest.Nombre + '.</p>' +
+                        '<p><b>Nombre del vendedor:</b>' + livePositionRequest.Nombre + '.</p>' +
                         '<p><b>Fecha:</b>' + localTime + '.</p>' +
                         '</div>' +
                         '</div>';

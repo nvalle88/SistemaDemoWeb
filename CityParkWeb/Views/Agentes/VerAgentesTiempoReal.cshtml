@@ -49,17 +49,39 @@
     }
 </style>
 <div id="content">
+    
     <div class="row">
         <div class="col-sm-12">
             <div class="well">
-                <legend>Agentes en tiempo real</legend>
+                <legend> 
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11">
+                            <h4 class="page-title txt-color-blueDark">
+                                <i class="fa-fw fa fa-users"></i>
+                                Vendedores en tiempo real !!!
+                                <span>
+
+                                </span>
+                            </h4>
+                        </div>
+                        <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
+                            <h4 class="page-title txt-color-black">
+                                <span>
+                                    <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>    
+                                </span>
+                            </h4>
+                        </div>
+                      
+                </div>
+                </legend> 
                 <section id="widget-grid" class="">
                     <div class="row">
                         <article class="col-sm-12 col-md-12 col-lg-12">
                             <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
                                 <header draggable="true">
-                                    <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
-                                    <h2>Click en el agente para ver las descripciones</h2>
+                                    <span class="widget-icon"> <i class="fa fa-map-marker"></i></span>
+                                    <h2>Click en el vendedor para ver la descripci&oacute;n</h2>
+                                    
                                 </header>
                                 <div>
                                     <div class="jarviswidget-editbox">
@@ -68,6 +90,8 @@
                                         <fieldset>
                                             <div class="row">
                                                 <div class="col-sm-12">
+                                                    
+                                                    
                                                     <div id="map_container"></div>
                                                     <div id="map"></div>
                                                 </div>
@@ -80,7 +104,7 @@
                     </div>
                 </section>
                 <footer>
-                    @Html.ActionLink("Cancelar", "Index","Home", null, new { @class = "btn btn-default" })
+                   
                 </footer>
             </div>
 
@@ -94,9 +118,7 @@
     <script>
         var map;
         var empresa;
-      
-
-</script>
+   </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIBkXjci-D1Gog6Ez_BkpJcdtEnO1XsBA&callback=initMap"
           async defer></script>

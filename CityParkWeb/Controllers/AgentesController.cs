@@ -27,6 +27,12 @@ namespace CityParkWeb.Controllers
             public double lng { get; set; }
             public DateTime? Fecha { get; set; }
             public string NombreUsuario { get; set; }
+            public string Telefono { get; set; }
+            public string Ruc { get; set; }
+            public string Direccion { get; set; }
+            public string PersonaContacto { get; set; }
+            public string Tipo { get; set; }
+            public double? Valor { get; set; }
 
         }
 
@@ -48,9 +54,33 @@ namespace CityParkWeb.Controllers
 
             var listaRequest = new List<PuntosRequest>();
 
+
+            var tipo = "";
+
             foreach (var item in response)
             {
-                listaRequest.Add(new PuntosRequest { lat = (Double)item.Cliente.Lat, lng = (Double)item.Cliente.Lon ,Fecha=item.Fecha,NombreUsuario=item.Cliente.Nombre});
+                if (item.Tipo==1)
+                {
+                    tipo = "Ventas";
+                }
+                if (item.Tipo == 2)
+                {
+                     tipo = "Visita";
+                }
+                listaRequest.Add(new PuntosRequest
+                { lat = (Double)item.Cliente.Lat,
+                  lng = (Double)item.Cliente.Lon ,
+                  Fecha =item.Fecha,
+                  NombreUsuario =item.Cliente.Nombre,
+                  Direccion=item.Cliente.Direccion,
+                  PersonaContacto=item.Cliente.PersonaContacto,
+                  Ruc=item.Cliente.Ruc,
+                  Telefono=item.Cliente.Telefono,
+                  Tipo=tipo,
+                  Valor=item.Valor,
+                  
+                  
+                });
             }
 
             return Json(listaRequest);
