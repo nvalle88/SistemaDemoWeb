@@ -36,6 +36,20 @@ namespace CityParkWeb.Controllers
 
         }
 
+
+
+        public async Task<JsonResult> GetClientes()
+        {
+            var response = await ApiServicio.Listar<Cliente>(new Uri(WebApp.BaseAddress), "api/Clientes");
+
+            if (response == null || response.Count == 0)
+            {
+                return Json(false);
+            }
+           
+            return Json(response);
+        }
+
         public async Task<JsonResult> RecorridoDiario(int Id)
         {
             if (Id <= 0)

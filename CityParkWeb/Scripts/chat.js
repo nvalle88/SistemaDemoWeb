@@ -21,15 +21,107 @@
                 origin: new google.maps.Point(0, 0), // origin
                 anchor: new google.maps.Point(0, 0) // anchor
             };
+
+        var iconClientes =
+            {
+                url: "../Content/images/pin.png", // url
+                scaledSize: new google.maps.Size(70, 70), // scaled size
+                origin: new google.maps.Point(0, 0), // origin
+                anchor: new google.maps.Point(0, 0) // anchor
+            };
         markers = [];
         markersDelete = [];
 
         a = 0;
         markersAgentes = [];
+        markersClientes = [];
+        clientecarga();
+        //Se carga la información de los clientes
+        function clientecarga () {
+            $.ajax({
+                type: 'POST',
+                url: '../Agentes/GetClientes',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        var marker;
+                        var pos = { lat: arreglo[i].Lat, lng: arreglo[i].Lon };
+                        var InformacionCliente =
+                            {
+                                Id: arreglo[i].Id,
+                                Nombre: arreglo[i].Nombre,
+                                Telefono: arreglo[i].Telefono,
+                                Lat: arreglo[i].Lat,
+                                Lon: arreglo[i].Lon,
+                                Ruc: arreglo[i].Ruc,
+                                Direccion: arreglo[i].Direccion,
+                                PersonaContacto: arreglo[i].PersonaContacto,
+                            }
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            title: InformacionCliente.Nombre,
+                            icon: iconClientes,
+                            
+
+                        });
+
+
+                        //marker.addListener('click', function () {
+                        //    infowindow.open(map, marker);
+                        //});
+                        markersClientes.push({ marker, InformacionCliente });
+                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
+
+
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Sistema gesti&oacute;n ventas</b></h4>' +
+                            '<legend></legend>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Cliente:&nbsp&nbsp</b>' + InformacionCliente.Nombre + '.</p>' +
+                            '<p><b>RUC:&nbsp&nbsp</b>' + InformacionCliente.Ruc + '.</p>' +
+                            '<p><b>Direcci&oacute;n:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
+                            '<p><b>Contacto:&nbsp&nbsp</b>' + InformacionCliente.PersonaContacto + '.</p>' +
+                            '<p><b>Tel&eacute;fono:&nbsp&nbsp</b>' + InformacionCliente.Telefono + '.</p>' +
+                            '</div>' +
+                            '</div>';
+                        var infowindow = new google.maps.InfoWindow();
+
+                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
+                            // !!! PROBLEM HERE
+                            return function (evt) {
+                                
+                                infowindow.setContent(contentString);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, contentString, infowindow));
+                        //markersClientes[i].marker.setListener('click', function () {
+                        //    infowindow.open(map, markersClientes[i].marker);
+                        //});
+
+                    }
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+        };
+        
+        
+
+        
 
         //this is the function that's run when the "messageReceived" function is called from the server
         chat.client.messageReceived = function (livePositionRequest) {
-
 
             var pos = { lat: livePositionRequest.Lat, lng: livePositionRequest.Lon };
 
@@ -43,13 +135,12 @@
                         icon: icon1
                     });
 
-
                     var localTime = moment.utc().toDate();
                     localTime = moment(localTime).format('DD-MM-YYYY hh:mm:ss A');
                     var contentString = '<div id="content">' +
                         '<div id="siteNotice">' +
                         '</div>' +
-                        '<h4 id="firstHeading" class="firstHeading">Digital Strategy</h1>' +
+                        '<h4 id="firstHeading" class="firstHeading">Vendedor</h1>' +
                         '<div id="bodyContent">' +
                         '<p><b>Nombre del vendedor:</b>' + livePositionRequest.Nombre + '.</p>' +
                         '<p><b>Fecha:</b>' + localTime + '.</p>' +
@@ -75,9 +166,9 @@
                         var contentString = '<div id="content">' +
                             '<div id="siteNotice">' +
                             '</div>' +
-                            '<h4 id="firstHeading" class="firstHeading">City Park</h1>' +
+                            '<h4 id="firstHeading" class="firstHeading">Vendedor</h1>' +
                             '<div id="bodyContent">' +
-                            '<p><b>Nombre del Agente:</b>' + livePositionRequest.Nombre + '.</p>' +
+                            '<p><b>Nombre del vendedor:</b>' + livePositionRequest.Nombre + '.</p>' +
                             '<p><b>Fecha:</b>' + localTime + '.</p>' +
                             '</div>' +
                             '</div>';
@@ -107,9 +198,9 @@
                         var contentString = '<div id="content">' +
                             '<div id="siteNotice">' +
                             '</div>' +
-                            '<h4 id="firstHeading" class="firstHeading">City Park</h1>' +
+                            '<h4 id="firstHeading" class="firstHeading">Vendedor</h1>' +
                             '<div id="bodyContent">' +
-                            '<p><b>Nombre del Agente:</b>' + livePositionRequest.Nombre + '.</p>' +
+                            '<p><b>Nombre del vendedor:</b>' + livePositionRequest.Nombre + '.</p>' +
                             '<p><b>Fecha:</b>' + localTime + '.</p>' +
                             '</div>' +
                             '</div>';
@@ -202,7 +293,41 @@
         function clearMarkers() {
             setMapOnAll(null);
         };
+        function MostrarClientes(arreglo)
+        {
+            for (var i = 0; i < arreglo.length; i++) {
 
+                var marker;
+                var pos = { lat: arreglo[i].Lat, lng: arreglo[i].Lon };
+
+                var marker = new google.maps.Marker({
+                    position: pos,
+                    map: map,
+                    title: livePositionRequest.Nombre,
+                    icon: icon1
+                });
+
+                var localTime = moment.utc().toDate();
+                localTime = moment(localTime).format('DD-MM-YYYY hh:mm:ss A');
+                var contentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<h4 id="firstHeading" class="firstHeading">Digital Strategy</h1>' +
+                    '<div id="bodyContent">' +
+                    '<p><b>Nombre del vendedor:</b>' + livePositionRequest.Nombre + '.</p>' +
+                    '<p><b>Fecha:</b>' + localTime + '.</p>' +
+                    '</div>' +
+                    '</div>';
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                marker.addListener('click', function () {
+                    infowindow.open(map, marker);
+                });
+                markersAgentes.push({ marker, livePositionRequest });
+
+            }
+        };
         $.connection.hub.start().done(function () {
             chatInput.keydown(function (e) {
 
