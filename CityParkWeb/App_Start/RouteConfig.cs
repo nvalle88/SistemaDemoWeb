@@ -15,8 +15,8 @@ namespace CityParkWeb
             routes.LowercaseUrls = true;
             routes.MapRoute("Default", "{controller}/{action}/{id}", new
             {
-                controller = "Agentes",
-                action = "VerAgentesTiempoReal",
+                controller = "Login",
+                action = "Index",
                 id = UrlParameter.Optional
             }).RouteHandler = new DashRouteHandler();
         }
