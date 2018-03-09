@@ -20,7 +20,7 @@ namespace CityParkWeb
 
         public static UserManager Create()
         {
-            // We have to create our own user manager in order to override some default behavior:
+            //nosotros ur own user manager in order to override some default behavior:
             //
             //  - Override default password length requirement (6) with a length of 4
             //  - Override user name requirements to allow spaces and dots
