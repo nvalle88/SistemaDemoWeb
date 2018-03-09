@@ -25,9 +25,10 @@
         var iconClientes =
             {
                 url: "../Content/images/pin.png", // url
-                scaledSize: new google.maps.Size(70, 70), // scaled size
+                size: new google.maps.Size(208, 208),
+                scaledSize: new google.maps.Size(208, 208), // scaled size
                 origin: new google.maps.Point(0, 0), // origin
-                anchor: new google.maps.Point(0, 0) // anchor
+                anchor: new google.maps.Point(104, 104) // anchor
             };
         markers = [];
         markersDelete = [];

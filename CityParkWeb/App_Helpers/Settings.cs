@@ -44,6 +44,8 @@ namespace CityParkWeb
         ///     Retrieves the entry value for the following composed key: "config:CurrentTheme" as a string.
         /// </summary>
         public static readonly string CurrentTheme = GetValue<string>("CurrentTheme");
+      
+
 
         /// <summary>
         ///     Gets the entry for the given key and prefix and retrieves its value as the specified type.

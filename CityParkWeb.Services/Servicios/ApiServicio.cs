@@ -20,11 +20,8 @@ namespace CityParkWeb.Services.Servicios
                 {
                     var request = JsonConvert.SerializeObject(model);
                     var content = new StringContent(request, Encoding.UTF8, "application/json");
-
                     var uri = string.Format("{0}/{1}", baseAddress, url);
-
                     var response = await client.PostAsync(new Uri(uri), content);
-
                     var resultado = await response.Content.ReadAsStringAsync();
                     var respuesta = JsonConvert.DeserializeObject<T>(resultado);
                     return respuesta;
