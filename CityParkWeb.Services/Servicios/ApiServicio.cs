@@ -11,7 +11,7 @@ namespace CityParkWeb.Services.Servicios
     public static class ApiServicio 
     {
 
-
+        //Demo para el Cajeros
         public static async Task<T> ObtenerElementoAsync1<T>(object model, Uri baseAddress, string url) where T : class
         {
             try
