@@ -41,7 +41,7 @@
         function clientecarga () {
             $.ajax({
                 type: 'POST',
-                url: '../Agentes/GetClientes',
+                url: '../CajeroCoopPolicias',
                 dataType: 'json',
                 data: {},
                 success: function (data) {
@@ -52,17 +52,13 @@
                     for (var i = 0; i < arreglo.length; i++) {
 
                         var marker;
-                        var pos = { lat: arreglo[i].Lat, lng: arreglo[i].Lon };
+                        var pos = { lat: arreglo[i].Latitud, lng: arreglo[i].Longitud };
                         var InformacionCliente =
                             {
-                                Id: arreglo[i].Id,
-                                Nombre: arreglo[i].Nombre,
-                                Telefono: arreglo[i].Telefono,
-                                Lat: arreglo[i].Lat,
-                                Lon: arreglo[i].Lon,
-                                Ruc: arreglo[i].Ruc,
-                                Direccion: arreglo[i].Direccion,
-                                PersonaContacto: arreglo[i].PersonaContacto,
+                               
+                                Lat: arreglo[i].Latitud,
+                                Lon: arreglo[i].Longitud,
+                               
                             }
                         var marker = new google.maps.Marker({
                             position: pos,

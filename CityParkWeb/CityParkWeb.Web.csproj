@@ -208,6 +208,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationSignInManager.cs" />
     <Compile Include="Controllers\ApplicationUserManager.cs" />
+    <Compile Include="Controllers\CajeroCoopPoliciasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1255,6 +1256,12 @@
     <Content Include="Views\TiposMultas\Index.cshtml" />
     <Content Include="Views\TiposMultas\Edit.cshtml" />
     <Content Include="Views\TiposMultas\Create.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Create.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Delete.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Details.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Edit.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Index.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\VerMisCajeros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
