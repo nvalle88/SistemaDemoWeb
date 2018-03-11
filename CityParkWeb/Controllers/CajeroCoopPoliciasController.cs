@@ -59,7 +59,7 @@ namespace CityParkWeb.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Provincia,Canton,Sector,Codigo,Ubicación,Direccion,Tipo,Modelo,Latitud,Longitud,TrxPropia,TrxBanred")] CajeroCoopPolicia cajeroCoopPolicia)
+        public ActionResult Create( CajeroCoopPolicia cajeroCoopPolicia)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace CityParkWeb.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Provincia,Canton,Sector,Codigo,Ubicación,Direccion,Tipo,Modelo,Latitud,Longitud,TrxPropia,TrxBanred")] CajeroCoopPolicia cajeroCoopPolicia)
+        public ActionResult Edit(CajeroCoopPolicia cajeroCoopPolicia)
         {
             if (ModelState.IsValid)
             {
