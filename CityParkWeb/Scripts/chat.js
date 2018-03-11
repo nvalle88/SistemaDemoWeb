@@ -24,6 +24,7 @@
 
         var iconClientes =
             {
+                //con el icono 
                 url: "../Content/images/trx_media.png", // url
                 size: new google.maps.Size(96, 96),
                 scaledSize: new google.maps.Size(96, 96), // scaled size
