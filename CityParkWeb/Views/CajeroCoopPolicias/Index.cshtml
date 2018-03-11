@@ -35,6 +35,10 @@
         padding-top: 30px;
         position: relative;
     }
+
+    .pac-container {
+        z-index: 99999;
+    }
 </style>
 
 <div id="content">
@@ -64,14 +68,68 @@
                         </div>
                         <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
                             <h4 class="page-title txt-color-black">
+                                <button type="button" data-toggle="modal" data-target="#ModalMap" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-map-marker"></span>
+                                </button>
                                 <span>
                                     <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>
                                 </span>
+
                             </h4>
                         </div>
 
                     </div>
                 </legend>
+                <div class="modal fade" id="ModalMap" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <legend>
+                                            <label class="col-sm-3 control-label">Nuevo Cajero:</label>
+                                            <div class="col-sm-8">
+
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        </legend>
+
+                                    </div>
+                                    <div id="map_container"></div>
+                                    <div id="map"></div>
+                                    <div class">&nbsp;</div>
+                                    <div class="m-t-small">
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="ModalMap-lat" placeholder="Nombre" />
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="ModalMap-lon" placeholder="Dirección" />
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="m-t-small">
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="ModalMap-lat" placeholder="Latitud"  disabled="disabled" />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="ModalMap-lon" placeholder="Longitud" disabled="disabled" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Guardar</button>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <section id="widget-grid" class="">
                     <div class="row">
                         <article class="col-sm-12 col-md-12 col-lg-12">
