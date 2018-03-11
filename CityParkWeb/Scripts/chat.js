@@ -24,10 +24,11 @@
 
         var iconClientes =
             {
-                url: "../Content/images/pin.png", // url
-                scaledSize: new google.maps.Size(70, 70), // scaled size
+                url: "../Content/images/trx_media.png", // url
+                size: new google.maps.Size(96, 96),
+                scaledSize: new google.maps.Size(96, 96), // scaled size
                 origin: new google.maps.Point(0, 0), // origin
-                anchor: new google.maps.Point(0, 0) // anchor
+                anchor: new google.maps.Point(48, 48) // anchor
             };
         markers = [];
         markersDelete = [];
@@ -40,7 +41,7 @@
         function clientecarga () {
             $.ajax({
                 type: 'POST',
-                url: '../Agentes/GetClientes',
+                url: '../CajeroCoopPolicias/GetCajeros',
                 dataType: 'json',
                 data: {},
                 success: function (data) {
@@ -51,17 +52,13 @@
                     for (var i = 0; i < arreglo.length; i++) {
 
                         var marker;
-                        var pos = { lat: arreglo[i].Lat, lng: arreglo[i].Lon };
+                        var pos = { lat: arreglo[i].Latitud, lng: arreglo[i].Longitud };
                         var InformacionCliente =
                             {
-                                Id: arreglo[i].Id,
-                                Nombre: arreglo[i].Nombre,
-                                Telefono: arreglo[i].Telefono,
-                                Lat: arreglo[i].Lat,
-                                Lon: arreglo[i].Lon,
-                                Ruc: arreglo[i].Ruc,
-                                Direccion: arreglo[i].Direccion,
-                                PersonaContacto: arreglo[i].PersonaContacto,
+                               
+                                Lat: arreglo[i].Latitud,
+                                Lon: arreglo[i].Longitud,
+                               
                             }
                         var marker = new google.maps.Marker({
                             position: pos,

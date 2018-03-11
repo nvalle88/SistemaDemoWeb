@@ -15,8 +15,9 @@ namespace CityParkWeb.Controllers
             return View();
         }
 
-        public ActionResult Social()
+        public ActionResult Login()
         {
+           
             return View();
         }
 

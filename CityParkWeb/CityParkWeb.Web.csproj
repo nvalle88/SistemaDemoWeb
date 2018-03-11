@@ -206,14 +206,19 @@
     <Compile Include="Areas\Landing\LandingAreaRegistration.cs" />
     <Compile Include="ClassUtils\LivePositionRequest.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AgentesController.cs" />
     <Compile Include="Controllers\ApplicationSignInManager.cs" />
     <Compile Include="Controllers\ApplicationUserManager.cs" />
+    <Compile Include="Controllers\CajeroCoopPoliciasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\RecivedPosition.cs" />
+    <Compile Include="ModelosDatos\CajeroCompetencia.cs" />
+    <Compile Include="ModelosDatos\CajeroCoopPolicia.cs" />
+    <Compile Include="ModelosDatos\MapaConcentracion.cs" />
+    <Compile Include="ModelosDatos\Model.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -328,6 +333,9 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\ic_policeman.png" />
     <Content Include="Content\images\pin.png" />
+    <Content Include="Content\images\trx_alta.png" />
+    <Content Include="Content\images\trx_baja.png" />
+    <Content Include="Content\images\trx_media.png" />
     <Content Include="Content\img\ajax-loader.gif" />
     <Content Include="Content\img\alpha.png" />
     <Content Include="Content\img\avatars\1.png" />
@@ -559,6 +567,8 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="img\logo.png" />
+    <Content Include="img\logoCPN.png" />
     <Content Include="Scripts\app.config.js" />
     <Content Include="Scripts\app.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1148,7 +1158,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Agentes\VerAgentesTiempoReal.cshtml" />
     <Content Include="Scripts\libs\jquery-2.1.1.min.map" />
     <Content Include="Scripts\plugin\bootstrap-tags\dist\bootstrap-tagsinput.min.js.map" />
     <Content Include="Scripts\plugin\ckeditor\CHANGES.md" />
@@ -1234,9 +1243,6 @@
     <Content Include="Views\Tables\Normal.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\_LoginText.cshtml" />
-    <Content Include="Views\Agentes\Index.cshtml" />
-    <Content Include="Views\Agentes\Create.cshtml" />
-    <Content Include="Views\Agentes\Edit.cshtml" />
     <Content Include="Views\Vendedores\Create.cshtml" />
     <Content Include="Views\Vendedores\Edit.cshtml" />
     <Content Include="Views\Vendedores\Index.cshtml" />
@@ -1253,7 +1259,12 @@
     <Content Include="Views\TiposMultas\Index.cshtml" />
     <Content Include="Views\TiposMultas\Edit.cshtml" />
     <Content Include="Views\TiposMultas\Create.cshtml" />
-    <Content Include="Views\Agentes\Recorrido.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Create.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Delete.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Details.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Edit.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\Index.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\VerMisCajeros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1276,16 +1287,6 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CityParkWeb.Entities\CityParkWeb.Entities.csproj">
-      <Project>{F4022A4D-96A3-4D91-945C-905F8D97413E}</Project>
-      <Name>CityParkWeb.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CityParkWeb.Services\CityParkWeb.Services.csproj">
-      <Project>{75EFCCF8-4ADD-4BBA-AD58-84A131AF52B9}</Project>
-      <Name>CityParkWeb.Services</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
@@ -1302,7 +1303,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52127</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
