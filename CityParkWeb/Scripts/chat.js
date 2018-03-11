@@ -24,11 +24,11 @@
 
         var iconClientes =
             {
-                url: "../Content/images/pin.png", // url
-                size: new google.maps.Size(208, 208),
-                scaledSize: new google.maps.Size(208, 208), // scaled size
+                url: "../Content/images/trx_media.png", // url
+                size: new google.maps.Size(96, 96),
+                scaledSize: new google.maps.Size(96, 96), // scaled size
                 origin: new google.maps.Point(0, 0), // origin
-                anchor: new google.maps.Point(104, 104) // anchor
+                anchor: new google.maps.Point(48, 48) // anchor
             };
         markers = [];
         markersDelete = [];
@@ -41,7 +41,7 @@
         function clientecarga () {
             $.ajax({
                 type: 'POST',
-                url: '../CajeroCoopPolicias',
+                url: '../CajeroCoopPolicias/GetCajeros',
                 dataType: 'json',
                 data: {},
                 success: function (data) {

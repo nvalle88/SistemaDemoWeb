@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using CityParkWeb.ModelosDatos;
@@ -18,6 +19,18 @@ namespace CityParkWeb.Controllers
         public ActionResult Index()
         {
             return View(db.CajeroCoopPolicia.ToList());
+        }
+
+        public async Task<JsonResult> GetCajeros()
+        {
+            var response = db.CajeroCoopPolicia.ToList();
+
+            if (response == null || response.Count == 0)
+            {
+                return Json(false);
+            }
+
+            return Json(response);
         }
 
         // GET: CajeroCoopPolicias/Details/5
