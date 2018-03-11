@@ -42,7 +42,7 @@
 </style>
 
 <div id="content">
-    <div class="alert alert-block alert-info">
+    @*<div class="alert alert-block alert-info">
         <a class="close" data-dismiss="alert" href="#">×</a>
         <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Informaci&oacute;n</h4>
         <p>
@@ -51,7 +51,7 @@
         <p>
             * Click sobre <b>VENDEDORES</b> y <b>CLIENTES</b> para vizualizar su informaci&oacute;n !!!
         </p>
-    </div>
+    </div>*@
     <div class="row">
         <div class="col-sm-12">
             <div class="well">
@@ -59,20 +59,38 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11">
                             <h4 class="page-title txt-color-blueDark">
-                                <i class="fa-fw fa fa-users"></i>
-                                Vendedores en tiempo real !!!
+                                <i class="fa-fw fa fa-fax"></i>
+                                Cajeros
                                 <span>
 
+                                    Mis Cajeros
+                                    <input data-val="true"
+                                           data-val-required="The isNewlyEnrolled field is required."
+                                           id="isNewlyEnrolled"
+                                           name="isNewlyEnrolled"
+                                           type="checkbox"
+                                           value="true" />
+                                    Cajeros BanRed
+
+                                    <input data-val="true"
+                                           data-val-required="The isNewlyEnrolled field is required."
+                                           id="isNewlyEnrolled"
+                                           name="isNewlyEnrolled"
+                                           type="checkbox"
+                                           value="true" 
+                                           />
+
+                                    <a href="" data-toggle="modal" data-target="#ModalMap" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-map-marker"></i></a>
+
+                                    <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>
                                 </span>
                             </h4>
                         </div>
                         <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
                             <h4 class="page-title txt-color-black">
-                                <button type="button" data-toggle="modal" data-target="#ModalMap" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-map-marker"></span>
-                                </button>
+                              
                                 <span>
-                                    <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>
+                                  
                                 </span>
 
                             </h4>
