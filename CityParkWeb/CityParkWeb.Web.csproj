@@ -331,6 +331,7 @@
     <Content Include="Content\fonts\fontawesome4.2\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\fontawesome4.2\readme.txt" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\images\cajero.jpg" />
     <Content Include="Content\images\ic_policeman.png" />
     <Content Include="Content\images\pin.png" />
     <Content Include="Content\images\trx_alta.png" />

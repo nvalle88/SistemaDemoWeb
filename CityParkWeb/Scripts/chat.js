@@ -56,10 +56,15 @@
                         var pos = { lat: arreglo[i].Latitud, lng: arreglo[i].Longitud };
                         var InformacionCliente =
                             {
-                               
+
                                 Lat: arreglo[i].Latitud,
                                 Lon: arreglo[i].Longitud,
-                               
+                                Codigo: arreglo[i].Codigo,
+                                Direccion: arreglo[i].Direccion,
+                                Tipo: arreglo[i].Tipo,
+                                Modelo: arreglo[i].Modelo,
+                                TrxPropia: arreglo[i].TrxPropia,
+                                TrxBanred: arreglo[i].TrxBanred,
                             }
                         var marker = new google.maps.Marker({
                             position: pos,
@@ -81,14 +86,16 @@
                         var contentString = '<div id="content">' +
                             '<div id="siteNotice">' +
                             '</div>' +
-                            '<h4 id="firstHeading" class="firstHeading"><b>Sistema gesti&oacute;n ventas</b></h4>' +
-                            '<legend></legend>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                            '<img src="../Content/images/cajero.jpg" />' +                            '<legend></legend>' +
                             '<div id="bodyContent">' +
-                            '<p><b>Cliente:&nbsp&nbsp</b>' + InformacionCliente.Nombre + '.</p>' +
-                            '<p><b>RUC:&nbsp&nbsp</b>' + InformacionCliente.Ruc + '.</p>' +
-                            '<p><b>Direcci&oacute;n:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
-                            '<p><b>Contacto:&nbsp&nbsp</b>' + InformacionCliente.PersonaContacto + '.</p>' +
-                            '<p><b>Tel&eacute;fono:&nbsp&nbsp</b>' + InformacionCliente.Telefono + '.</p>' +
+                            '<p><b>Codigo:&nbsp&nbsp</b>' + InformacionCliente.Codigo + '.</p>' +
+                            '<p><b>Direccion:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
+                            '<p><b>Tipo:&nbsp&nbsp</b>' + InformacionCliente.Tipo + '.</p>' +
+                            '<p><b>Modelo:&nbsp&nbsp</b>' + InformacionCliente.Modelo + '.</p>' +
+                            '<p><b>TrxPropia:&nbsp&nbsp</b>' + InformacionCliente.TrxPropia + '.</p>' +
+                            '<p><b>TrxBanred:&nbsp&nbsp</b>' + InformacionCliente.TrxBanred + '.</p>' +
+
                             '</div>' +
                             '</div>';
                         var infowindow = new google.maps.InfoWindow();
