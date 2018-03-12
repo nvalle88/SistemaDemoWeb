@@ -37,6 +37,18 @@ namespace CityParkWeb.Controllers
             return Json(response);
         }
 
+        public async Task<JsonResult> GetCajerosBanRed()
+        {
+            var response = db.CajeroCompetencia.ToList();
+
+            if (response == null || response.Count == 0)
+            {
+                return Json(false);
+            }
+
+            return Json(response);
+        }
+
         public async Task<JsonResult> GetPuntosMapaCalor()
         {
             var response = db.MapaConcentracion.ToList();

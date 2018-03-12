@@ -5,7 +5,6 @@
 
         var chatInput = $("#chat-input");
         var userName;
-        var map;
         var chat = $.connection.recived;
         var chatWindow = $("#chat-window");
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -14,12 +13,13 @@
         });
         geoLocation(map);
 
-        var icon1 =
+        var iconCompetencia =
             {
-                url: "../Content/images/ic_policeman.png", // url
-                scaledSize: new google.maps.Size(70, 70), // scaled size
+                url: "../Content/images/trx_baja.png", // url
+                size: new google.maps.Size(96, 96),
+                scaledSize: new google.maps.Size(96, 96), // scaled size
                 origin: new google.maps.Point(0, 0), // origin
-                anchor: new google.maps.Point(0, 0) // anchor
+                anchor: new google.maps.Point(48, 48) // anchor
             };
 
         var iconClientes =
@@ -37,8 +37,11 @@
         a = 0;
         markersAgentes = [];
         markersClientes = [];
-        clientecarga();
-        //Se carga la información de los clientes
+        //getmapaCalor();
+        //clientecarga();
+        //clientecargaBanRed();
+
+        ///Se carga la información de los cajeros
         function clientecarga () {
             $.ajax({
                 type: 'POST',
@@ -56,17 +59,22 @@
                         var pos = { lat: arreglo[i].Latitud, lng: arreglo[i].Longitud };
                         var InformacionCliente =
                             {
-                               
+
                                 Lat: arreglo[i].Latitud,
                                 Lon: arreglo[i].Longitud,
-                               
+                                Codigo: arreglo[i].Codigo,
+                                Direccion: arreglo[i].Direccion,
+                                Tipo: arreglo[i].Tipo,
+                                Modelo: arreglo[i].Modelo,
+                                TrxPropia: arreglo[i].TrxPropia,
+                                TrxBanred: arreglo[i].TrxBanred,
                             }
                         var marker = new google.maps.Marker({
                             position: pos,
                             map: map,
                             title: InformacionCliente.Nombre,
                             icon: iconClientes,
-                            
+
 
                         });
 
@@ -81,14 +89,16 @@
                         var contentString = '<div id="content">' +
                             '<div id="siteNotice">' +
                             '</div>' +
-                            '<h4 id="firstHeading" class="firstHeading"><b>Sistema gesti&oacute;n ventas</b></h4>' +
-                            '<legend></legend>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                            '<img src="../Content/images/cajero.jpg" />' + '<legend></legend>' +
                             '<div id="bodyContent">' +
-                            '<p><b>Cliente:&nbsp&nbsp</b>' + InformacionCliente.Nombre + '.</p>' +
-                            '<p><b>RUC:&nbsp&nbsp</b>' + InformacionCliente.Ruc + '.</p>' +
-                            '<p><b>Direcci&oacute;n:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
-                            '<p><b>Contacto:&nbsp&nbsp</b>' + InformacionCliente.PersonaContacto + '.</p>' +
-                            '<p><b>Tel&eacute;fono:&nbsp&nbsp</b>' + InformacionCliente.Telefono + '.</p>' +
+                            '<p><b>Codigo:&nbsp&nbsp</b>' + InformacionCliente.Codigo + '.</p>' +
+                            '<p><b>Direccion:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
+                            '<p><b>Tipo:&nbsp&nbsp</b>' + InformacionCliente.Tipo + '.</p>' +
+                            '<p><b>Modelo:&nbsp&nbsp</b>' + InformacionCliente.Modelo + '.</p>' +
+                            '<p><b>TrxPropia:&nbsp&nbsp</b>' + InformacionCliente.TrxPropia + '.</p>' +
+                            '<p><b>TrxBanred:&nbsp&nbsp</b>' + InformacionCliente.TrxBanred + '.</p>' +
+
                             '</div>' +
                             '</div>';
                         var infowindow = new google.maps.InfoWindow();
@@ -96,7 +106,7 @@
                         google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
                             // !!! PROBLEM HERE
                             return function (evt) {
-                                
+
                                 infowindow.setContent(contentString);
                                 infowindow.open(map, marker);
                             }
@@ -113,10 +123,122 @@
                 }
             });
         };
-        
-        
 
-        
+        function clientecargaBanRed() {
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetCajerosBanRed',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        var marker;
+                        var pos = { lat: arreglo[i].Altitud, lng: arreglo[i].Longitud };
+                        var InformacionCliente =
+                            {
+
+                                Lat: arreglo[i].Altitud,
+                                Lon: arreglo[i].Longitud,
+                                Entidad: arreglo[i].Entidad,
+                              
+                            }
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            title: InformacionCliente.Entidad,
+                            icon: iconCompetencia,
+
+
+                        });
+
+
+                        //marker.addListener('click', function () {
+                        //    infowindow.open(map, marker);
+                        //});
+                        markersClientes.push({ marker, InformacionCliente });
+                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
+
+
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Entidad:&nbsp&nbsp</b>' + InformacionCliente.Entidad + '.</p>' +
+                            
+
+                            '</div>' +
+                            '</div>';
+                        var infowindow = new google.maps.InfoWindow();
+
+                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
+                            // !!! PROBLEM HERE
+                            return function (evt) {
+
+                                infowindow.setContent(contentString);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, contentString, infowindow));
+                        //markersClientes[i].marker.setListener('click', function () {
+                        //    infowindow.open(map, markersClientes[i].marker);
+                        //});
+
+                    }
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+        };
+
+        $("#mapacalor").click(function () {
+            toggleHeatmap
+        });
+
+        function toggleHeatmap() {
+            heatmap.setMap(heatmap.getMap() ? null : map);
+        };
+        function getmapaCalor()
+        {
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetPuntosMapaCalor',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    var heatmapData = [];
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        heatmapData.push(new google.maps.LatLng(arreglo[i].Latitud, arreglo[i].Longitud))
+
+                    }
+
+                    heatmap = new google.maps.visualization.HeatmapLayer({
+                        data: heatmapData,
+                        radius: 20,
+                        maxIntensity: 4,
+                        dissipating: true
+                    });
+                    heatmap.setMap(map);
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+        };
+
+
 
         //this is the function that's run when the "messageReceived" function is called from the server
         chat.client.messageReceived = function (livePositionRequest) {
