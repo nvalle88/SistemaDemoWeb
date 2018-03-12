@@ -5,7 +5,6 @@
 
         var chatInput = $("#chat-input");
         var userName;
-        var map;
         var chat = $.connection.recived;
         var chatWindow = $("#chat-window");
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -37,9 +36,11 @@
         a = 0;
         markersAgentes = [];
         markersClientes = [];
+        getmapaCalor();
         clientecarga();
+
         //Se carga la información de los clientes
-        function clientecarga () {
+        function clientecarga() {
             $.ajax({
                 type: 'POST',
                 url: '../CajeroCoopPolicias/GetCajeros',
@@ -71,7 +72,7 @@
                             map: map,
                             title: InformacionCliente.Nombre,
                             icon: iconClientes,
-                            
+
 
                         });
 
@@ -87,7 +88,7 @@
                             '<div id="siteNotice">' +
                             '</div>' +
                             '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
-                            '<img src="../Content/images/cajero.jpg" />' +                            '<legend></legend>' +
+                            '<img src="../Content/images/cajero.jpg" />' + '<legend></legend>' +
                             '<div id="bodyContent">' +
                             '<p><b>Codigo:&nbsp&nbsp</b>' + InformacionCliente.Codigo + '.</p>' +
                             '<p><b>Direccion:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
@@ -103,7 +104,7 @@
                         google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
                             // !!! PROBLEM HERE
                             return function (evt) {
-                                
+
                                 infowindow.setContent(contentString);
                                 infowindow.open(map, marker);
                             }
@@ -120,8 +121,47 @@
                 }
             });
         };
-        
-        
+
+        $("#mapacalor").click(function () {
+            toggleHeatmap
+        });
+
+        function toggleHeatmap() {
+            heatmap.setMap(heatmap.getMap() ? null : map);
+        };
+        function getmapaCalor()
+        {
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetPuntosMapaCalor',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    var heatmapData = [];
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        heatmapData.push(new google.maps.LatLng(arreglo[i].Latitud, arreglo[i].Longitud))
+
+                    }
+
+                    heatmap = new google.maps.visualization.HeatmapLayer({
+                        data: heatmapData,
+                        radius: 20,
+                        maxIntensity: 4,
+                        dissipating: true
+                    });
+                    heatmap.setMap(map);
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+        };
 
         
 

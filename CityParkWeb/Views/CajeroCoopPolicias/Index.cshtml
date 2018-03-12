@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.css" />
 <script src="~/Scripts/libs/waitMe/waitMe.min.js"></script>
 <script src="~/Scripts/Site.js"></script>
+<script src="~/Scripts/chat.js"></script>
 
 <style>
     #map_container {
@@ -42,16 +43,28 @@
 </style>
 
 <div id="content">
+    <div class="row">
+
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <fieldset>
+                <legend>Nivel socioeconómico</legend>
+                <button id="mapacalor">Ocultar/Mostrar</button>
+                <button onclick="changeGradient()">Cambiar gradiente</button>
+                <button onclick="changeRadius()">Cambiar influencia</button>
+                <button onclick="changeOpacity()">Cambiar opacidad</button>
+            </fieldset>
+        </article>
+    </div>
     @*<div class="alert alert-block alert-info">
-        <a class="close" data-dismiss="alert" href="#">×</a>
-        <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Informaci&oacute;n</h4>
-        <p>
-            Usted puede obserbar los vendedores en tiempo real as&iacute; como la ubicaci&oacute;n de los clientes !!!
-        </p>
-        <p>
-            * Click sobre <b>VENDEDORES</b> y <b>CLIENTES</b> para vizualizar su informaci&oacute;n !!!
-        </p>
-    </div>*@
+            <a class="close" data-dismiss="alert" href="#">×</a>
+            <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Informaci&oacute;n</h4>
+            <p>
+                Usted puede obserbar los vendedores en tiempo real as&iacute; como la ubicaci&oacute;n de los clientes !!!
+            </p>
+            <p>
+                * Click sobre <b>VENDEDORES</b> y <b>CLIENTES</b> para vizualizar su informaci&oacute;n !!!
+            </p>
+        </div>*@
     <div class="row">
         <div class="col-sm-12">
             <div class="well">
@@ -61,42 +74,42 @@
                             <h4 class="page-title txt-color-blueDark">
                                 <i class="fa-fw fa fa-fax"></i>
                                 Cajeros
-                                
+
 
 
                             </h4>
                             <div class="row">
 
                                 <article class="col-sm-12 col-md-12 col-lg-12">
-                                    <fieldset>                                       
-                                            Mis Cajeros
-                                            <input data-val="true"
-                                                   data-val-required="The isNewlyEnrolled field is required."
-                                                   id="isNewlyEnrolled"
-                                                   name="isNewlyEnrolled"
-                                                   type="checkbox"
-                                                   value="true" />
-                                            Cajeros BanRed
+                                    <fieldset>
+                                        Mis Cajeros
+                                        <input data-val="true"
+                                               data-val-required="The isNewlyEnrolled field is required."
+                                               id="isNewlyEnrolled"
+                                               name="isNewlyEnrolled"
+                                               type="checkbox"
+                                               value="true" />
+                                        Cajeros BanRed
 
-                                            <input data-val="true"
-                                                   data-val-required="The isNewlyEnrolled field is required."
-                                                   id="isNewlyEnrolled"
-                                                   name="isNewlyEnrolled"
-                                                   type="checkbox"
-                                                   value="true" />
+                                        <input data-val="true"
+                                               data-val-required="The isNewlyEnrolled field is required."
+                                               id="isNewlyEnrolled"
+                                               name="isNewlyEnrolled"
+                                               type="checkbox"
+                                               value="true" />
 
-                                            <a href="" data-toggle="modal" data-target="#ModalMap" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-map-marker"></i></a>
+                                        <a href="" data-toggle="modal" data-target="#ModalMap" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-map-marker"></i></a>
 
-                                            <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>
+                                        <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>
                                     </fieldset>
                                 </article>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
                             <h4 class="page-title txt-color-black">
-                              
+
                                 <span>
-                                  
+
                                 </span>
 
                             </h4>
@@ -118,9 +131,9 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                       </legend> 
+                                        </legend>
                                         <div id="map_container"></div>
-                                        
+
                                         <div class">&nbsp;</div>
                                         <div class="m-t-small">
                                             <div class="col-sm-4">
@@ -195,7 +208,7 @@
 
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIBkXjci-D1Gog6Ez_BkpJcdtEnO1XsBA&callback=initMap"
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIBkXjci-D1Gog6Ez_BkpJcdtEnO1XsBA&libraries=visualization"
           async defer></script>
 
 
