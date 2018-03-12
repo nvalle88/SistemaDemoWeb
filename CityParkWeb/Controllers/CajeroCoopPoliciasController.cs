@@ -87,6 +87,17 @@ namespace CityParkWeb.Controllers
 
             return View(cajeroCoopPolicia);
         }
+        public ActionResult CrearCajeros(CajeroCoopPolicia cajeroCoopPolicia)
+        {
+            if (ModelState.IsValid)
+            {
+                db.CajeroCoopPolicia.Add(cajeroCoopPolicia);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(cajeroCoopPolicia);
+        }
 
         // GET: CajeroCoopPolicias/Edit/5
         public ActionResult Edit(int? id)
