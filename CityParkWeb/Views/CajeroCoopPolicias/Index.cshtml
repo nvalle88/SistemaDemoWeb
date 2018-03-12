@@ -7,7 +7,7 @@
 <script src="~/Scripts/jquery-1.9.1.min.js"></script>
 <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+
 <script src="~/signalr/hubs"></script>
 <script src="~/Scripts/chat.js"></script>
 <script src="~/Scripts/jquery-3.2.1.min.js"></script>
@@ -48,7 +48,7 @@
         <article class="col-sm-12 col-md-12 col-lg-12">
             <fieldset>
                 <legend>Nivel socioeconómico</legend>
-                <button id="mapacalor">Ocultar/Mostrar</button>
+                <button onclick="toggleHeatmap()" >Ocultar/Mostrar</button>
                 <button onclick="changeGradient()">Cambiar gradiente</button>
                 <button onclick="changeRadius()">Cambiar influencia</button>
                 <button onclick="changeOpacity()">Cambiar opacidad</button>
@@ -98,7 +98,7 @@
                                                type="checkbox"
                                                value="true" />
 
-                                            <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>
+                                        <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>
                                     </fieldset>
                                 </article>
                             </div>
@@ -155,106 +155,453 @@
 
 
 
-<script>
-    var map;
-    var empresa;
+@section pagespecific {
+    <script>
+        var arreglo = [];
+       
+        markers = [];
+        markersDelete = [];
 
-</script>
+        a = 0;
+        markersAgentes = [];
+        markersClientes = [];
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIBkXjci-D1Gog6Ez_BkpJcdtEnO1XsBA&libraries=visualization"
-          async defer></script>
+        var map;
+        var heatmap;
+        function initMap() {
+
+            var iconCompetencia =
+                {
+                    url: "../Content/images/trx_baja.png", // url
+                    size: new google.maps.Size(96, 96),
+                    scaledSize: new google.maps.Size(96, 96), // scaled size
+                    origin: new google.maps.Point(0, 0), // origin
+                    anchor: new google.maps.Point(48, 48) // anchor
+                };
+
+            var iconClientes =
+                {
+                    //con el icono 
+                    url: "../Content/images/trx_media.png", // url
+                    size: new google.maps.Size(96, 96),
+                    scaledSize: new google.maps.Size(96, 96), // scaled size
+                    origin: new google.maps.Point(0, 0), // origin
+                    anchor: new google.maps.Point(48, 48) // anchor
+                };
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: { lat: -0.173689784, lng: -78.49555141 },
+                mapTypeId: 'satellite'
+            });
+            //Mapa Calor
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetPuntosMapaCalor',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    var heatmapData = [];
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        heatmapData.push(new google.maps.LatLng(arreglo[i].Latitud, arreglo[i].Longitud))
+
+                    }
+
+                    heatmap = new google.maps.visualization.HeatmapLayer({
+                        data: heatmapData,
+                        radius: 20,
+                        maxIntensity: 4,
+                        dissipating: true
+                    });
+                    heatmap.setMap(map);
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+
+            //Cajeros CNP
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetCajeros',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        var marker;
+                        var pos = { lat: arreglo[i].Latitud, lng: arreglo[i].Longitud };
+                        var InformacionCliente =
+                            {
+
+                                Lat: arreglo[i].Latitud,
+                                Lon: arreglo[i].Longitud,
+                                Codigo: arreglo[i].Codigo,
+                                Direccion: arreglo[i].Direccion,
+                                Tipo: arreglo[i].Tipo,
+                                Modelo: arreglo[i].Modelo,
+                                TrxPropia: arreglo[i].TrxPropia,
+                                TrxBanred: arreglo[i].TrxBanred,
+                            }
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            title: InformacionCliente.Nombre,
+                            icon: iconClientes,
 
 
-@*<h2>Index</h2>
+                        });
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Provincia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Canton)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sector)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Codigo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ubicación)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Direccion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tipo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modelo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitud)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitud)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrxPropia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrxBanred)
-            </th>
-            <th></th>
-        </tr>
 
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Provincia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Canton)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sector)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Codigo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ubicación)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tipo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modelo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitud)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitud)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrxPropia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrxBanred)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
-    }
+                        //marker.addListener('click', function () {
+                        //    infowindow.open(map, marker);
+                        //});
+                        markersClientes.push({ marker, InformacionCliente });
+                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
 
-    </table>*@
+
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                            '<img src="../Content/images/cajero.jpg" />' + '<legend></legend>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Codigo:&nbsp&nbsp</b>' + InformacionCliente.Codigo + '.</p>' +
+                            '<p><b>Direccion:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
+                            '<p><b>Tipo:&nbsp&nbsp</b>' + InformacionCliente.Tipo + '.</p>' +
+                            '<p><b>Modelo:&nbsp&nbsp</b>' + InformacionCliente.Modelo + '.</p>' +
+                            '<p><b>TrxPropia:&nbsp&nbsp</b>' + InformacionCliente.TrxPropia + '.</p>' +
+                            '<p><b>TrxBanred:&nbsp&nbsp</b>' + InformacionCliente.TrxBanred + '.</p>' +
+
+                            '</div>' +
+                            '</div>';
+                        var infowindow = new google.maps.InfoWindow();
+
+                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
+                            // !!! PROBLEM HERE
+                            return function (evt) {
+
+                                infowindow.setContent(contentString);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, contentString, infowindow));
+                        //markersClientes[i].marker.setListener('click', function () {
+                        //    infowindow.open(map, markersClientes[i].marker);
+                        //});
+
+                    }
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+
+            //Cajeros Competencia
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetCajerosBanRed',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        var marker;
+                        var pos = { lat: arreglo[i].Altitud, lng: arreglo[i].Longitud };
+                        var InformacionCliente =
+                            {
+
+                                Lat: arreglo[i].Altitud,
+                                Lon: arreglo[i].Longitud,
+                                Entidad: arreglo[i].Entidad,
+
+                            }
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            title: InformacionCliente.Entidad,
+                            icon: iconCompetencia,
+
+
+                        });
+
+
+                        //marker.addListener('click', function () {
+                        //    infowindow.open(map, marker);
+                        //});
+                        markersClientes.push({ marker, InformacionCliente });
+                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
+
+
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Entidad:&nbsp&nbsp</b>' + InformacionCliente.Entidad + '.</p>' +
+
+
+                            '</div>' +
+                            '</div>';
+                        var infowindow = new google.maps.InfoWindow();
+
+                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
+                            // !!! PROBLEM HERE
+                            return function (evt) {
+
+                                infowindow.setContent(contentString);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, contentString, infowindow));
+                        //markersClientes[i].marker.setListener('click', function () {
+                        //    infowindow.open(map, markersClientes[i].marker);
+                        //});
+
+                    }
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+
+            geoLocation(map);
+
+        }
+
+        function clientecarga() {
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetCajeros',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        var marker;
+                        var pos = { lat: arreglo[i].Latitud, lng: arreglo[i].Longitud };
+                        var InformacionCliente =
+                            {
+
+                                Lat: arreglo[i].Latitud,
+                                Lon: arreglo[i].Longitud,
+                                Codigo: arreglo[i].Codigo,
+                                Direccion: arreglo[i].Direccion,
+                                Tipo: arreglo[i].Tipo,
+                                Modelo: arreglo[i].Modelo,
+                                TrxPropia: arreglo[i].TrxPropia,
+                                TrxBanred: arreglo[i].TrxBanred,
+                            }
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            title: InformacionCliente.Nombre,
+                            icon: iconClientes,
+
+
+                        });
+
+
+                        //marker.addListener('click', function () {
+                        //    infowindow.open(map, marker);
+                        //});
+                        markersClientes.push({ marker, InformacionCliente });
+                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
+
+
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                            '<img src="../Content/images/cajero.jpg" />' + '<legend></legend>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Codigo:&nbsp&nbsp</b>' + InformacionCliente.Codigo + '.</p>' +
+                            '<p><b>Direccion:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
+                            '<p><b>Tipo:&nbsp&nbsp</b>' + InformacionCliente.Tipo + '.</p>' +
+                            '<p><b>Modelo:&nbsp&nbsp</b>' + InformacionCliente.Modelo + '.</p>' +
+                            '<p><b>TrxPropia:&nbsp&nbsp</b>' + InformacionCliente.TrxPropia + '.</p>' +
+                            '<p><b>TrxBanred:&nbsp&nbsp</b>' + InformacionCliente.TrxBanred + '.</p>' +
+
+                            '</div>' +
+                            '</div>';
+                        var infowindow = new google.maps.InfoWindow();
+
+                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
+                            // !!! PROBLEM HERE
+                            return function (evt) {
+
+                                infowindow.setContent(contentString);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, contentString, infowindow));
+                        //markersClientes[i].marker.setListener('click', function () {
+                        //    infowindow.open(map, markersClientes[i].marker);
+                        //});
+
+                    }
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+        };
+
+        function clientecargaBanRed() {
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetCajerosBanRed',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        var marker;
+                        var pos = { lat: arreglo[i].Altitud, lng: arreglo[i].Longitud };
+                        var InformacionCliente =
+                            {
+
+                                Lat: arreglo[i].Altitud,
+                                Lon: arreglo[i].Longitud,
+                                Entidad: arreglo[i].Entidad,
+
+                            }
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            title: InformacionCliente.Entidad,
+                            icon: iconCompetencia,
+
+
+                        });
+
+
+                        //marker.addListener('click', function () {
+                        //    infowindow.open(map, marker);
+                        //});
+                        markersClientes.push({ marker, InformacionCliente });
+                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
+
+
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Entidad:&nbsp&nbsp</b>' + InformacionCliente.Entidad + '.</p>' +
+
+
+                            '</div>' +
+                            '</div>';
+                        var infowindow = new google.maps.InfoWindow();
+
+                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
+                            // !!! PROBLEM HERE
+                            return function (evt) {
+
+                                infowindow.setContent(contentString);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, contentString, infowindow));
+                        //markersClientes[i].marker.setListener('click', function () {
+                        //    infowindow.open(map, markersClientes[i].marker);
+                        //});
+
+                    }
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+        };
+
+
+        function geoLocation(map) {
+            var infoWindow = new google.maps.InfoWindow({ map: map });
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Posici&oacute;n actual');
+                    map.setCenter(pos);
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+        };
+
+        function toggleHeatmap() {
+            heatmap.setMap(heatmap.getMap() ? null : map);
+        }
+
+        function changeGradient() {
+            var gradient = [
+                'rgba(0, 255, 255, 0)',
+                'rgba(0, 255, 255, 1)',
+                'rgba(0, 191, 255, 1)',
+                'rgba(0, 127, 255, 1)',
+                'rgba(0, 63, 255, 1)',
+                'rgba(0, 0, 255, 1)',
+                'rgba(0, 0, 223, 1)',
+                'rgba(0, 0, 191, 1)',
+                'rgba(0, 0, 159, 1)',
+                'rgba(0, 0, 127, 1)',
+                'rgba(63, 0, 91, 1)',
+                'rgba(127, 0, 63, 1)',
+                'rgba(191, 0, 31, 1)',
+                'rgba(255, 0, 0, 1)'
+            ]
+            heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+        }
+
+        function changeRadius() {
+            heatmap.set('radius', heatmap.get('radius') ? null : 20);
+        }
+
+        function changeOpacity() {
+            heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+        }
+
+    </script>
+
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIBkXjci-D1Gog6Ez_BkpJcdtEnO1XsBA&libraries=visualization&callback=initMap"
+              async defer></script>
+
+}

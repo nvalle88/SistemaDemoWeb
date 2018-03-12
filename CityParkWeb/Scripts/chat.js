@@ -37,9 +37,9 @@
         a = 0;
         markersAgentes = [];
         markersClientes = [];
-        getmapaCalor();
-        clientecarga();
-        clientecargaBanRed();
+        //getmapaCalor();
+        //clientecarga();
+        //clientecargaBanRed();
 
         ///Se carga la información de los cajeros
         function clientecarga () {
