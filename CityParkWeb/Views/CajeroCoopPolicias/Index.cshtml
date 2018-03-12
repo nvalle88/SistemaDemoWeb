@@ -9,7 +9,6 @@
 <script src="~/Scripts/bootstrap.min.js"></script>
 
 <script src="~/signalr/hubs"></script>
-<script src="~/Scripts/chat.js"></script>
 <script src="~/Scripts/jquery-3.2.1.min.js"></script>
 <script src="~/Scripts/jquery-3.2.1.js"></script>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
@@ -24,6 +23,8 @@
 <script src="~/Scripts/Site.js"></script>
 <script src="~/Scripts/chat.js"></script>
 
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
 <style>
     #map_container {
         position: relative;
@@ -36,31 +37,41 @@
         padding-top: 30px;
         position: relative;
     }
-        #floating-panel {
+
+    #floating-panel {
         position: absolute;
-        top: 10px;
-        left: 25%;
+        top: 50px;
+        left: 1%;
         z-index: 5;
         background-color: #fff;
         padding: 5px;
         border: inherit 1px solid #999;
-        text-align: center;
-        font-family: 'Roboto','sans-serif';
+        text-align: left;
+        /*font-family: 'Roboto','sans-serif';*/
         line-height: 5px;
         padding-left: 5px;
     }
 
     #floating-panel {
+        border-radius: 5px;
         background-color: #fff;
         border: 1px solid #999;
-        left: 25%;
+        left: 1%;
         padding: 5px;
         position: absolute;
-        top: 10px;
-        z-index: 5;
+        top: 80px;
+        z-index: 999999;
     }
+
     .pac-container {
         z-index: 99999;
+    }
+
+    label {
+        font-size: 11px;
+        font-family: 'Roboto', sans-serif;
+        font-weight:500;
+        color:black;
     }
 </style>
 
@@ -68,55 +79,52 @@
 
     <div class="row">
         <div class="col-sm-12">
-                <section id="widget-grid" class="">
-                    <div class="row">
-                        <article class="col-sm-12 col-md-12 col-lg-12">
-                            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
-                                <header draggable="true">
-                                    <span class="widget-icon"> <i class="fa fa-map-marker"></i></span>
-                                    <h2>Click en el cajero para ver la descripci&oacute;n</h2>
+            <section id="widget-grid" class="">
+                <div class="row">
+                    <article class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
+                            <header draggable="true">
+                                <span class="widget-icon"> <i class="fa fa-map-marker"></i></span>
+                                <h2>Click en el cajero para ver la descripci&oacute;n</h2>
+                            </header>
+                            <div>
 
-                                </header>
-                                <div>
-                                    <div class="jarviswidget-editbox">
-                                    </div>
-                                    <div class="widget-body no-padding">
-                                        <fieldset>
-                                            <div id="floating-panel">
-                                                
-                                                <label><b>Mapa de Calor:</b></label>
-                                                <input onclick="toggleHeatmap()"
-                                                       type="checkbox"
-                                                       value="true"
-                                                       checked="checked" />
+                                <div class="widget-body no-padding">
+                                    <fieldset>
+                                        <div id="floating-panel">
+                                            <label>Mapa de Calor:</label>
+                                            <input onclick="toggleHeatmap()"
+                                                   type="checkbox"
+                                                   value="true"
+                                                   checked="checked" />
+                                            <br />
+                                            <label>Cajeros CPN:</label>&nbsp;&nbsp;
+                                            <input onclick="OcultarCPN()"
+                                                   type="checkbox"
+                                                   value="true"
+                                                   checked="checked" />
+                                            <br />
+                                            <label>Competencia:</label>&nbsp;
+                                            <input onclick="OcultarCompetencia()"
+                                                   type="checkbox"
+                                                   value="true"
+                                                   checked="checked" />
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
 
-                                                <label><b>Cajeros CPN:</b></label>
-                                                <input onclick="toggleHeatmap()"
-                                                       type="checkbox"
-                                                       value="true"
-                                                       checked="checked" />
 
-                                                <label><b> Competencia:</b></label>
-                                                <input onclick="toggleHeatmap()"
-                                                       type="checkbox"
-                                                       value="true"
-                                                       checked="checked" />
+                                                <div id="map_container"></div>
+                                                <div id="map"></div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-
-
-                                                    <div id="map_container"></div>
-                                                    <div id="map"></div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
+                                        </div>
+                                    </fieldset>
                                 </div>
                             </div>
-                        </article>
-                    </div>
-                </section>
+                        </div>
+                    </article>
+                </div>
+            </section>
 
         </div>
     </div>
@@ -128,13 +136,15 @@
 @section pagespecific {
     <script>
         var arreglo = [];
-       
+
         markers = [];
         markersDelete = [];
 
         a = 0;
         markersAgentes = [];
         markersClientes = [];
+        ClienteCPN = [];
+        ClienteBanRed = [];
 
         var map;
         var heatmap;
@@ -143,22 +153,22 @@
             var iconCompetencia =
                 {
                     url: "../Content/images/BanRed.png", // url
-                    size: new google.maps.Size(37, 48),
-                    scaledSize: new google.maps.Size(37, 48), // scaled size
+                    size: new google.maps.Size(48, 48),
+                    scaledSize: new google.maps.Size(48, 48), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
-                    anchor: new google.maps.Point(18.5, 48) // anchor
+                    anchor: new google.maps.Point(24, 48) // anchor
                 };
 
             var iconCPN =
                 {
-                    //con el icono 
+                    //con el icono
                     url: "../Content/images/Alta.png", // url
                     size: new google.maps.Size(48, 48),
                     scaledSize: new google.maps.Size(48, 48), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(24, 48) // anchor
                 };
-           
+
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
                 center: { lat: -0.173689784, lng: -78.49555141 },
@@ -226,13 +236,13 @@
                         switch (arreglo[i].Clasificacion) {
                             case "B":
                                 iconCPN.url = "../Content/images/Baja.png"
-                                break 
+                                break
                             case "M":
                                 iconCPN.url = "../Content/images/Media.png"
-                                break 
+                                break
                             case "A":
                                 iconCPN.url = "../Content/images/Alta.png"
-                                break 
+                                break
 
 
                             default:
@@ -249,7 +259,7 @@
                         //marker.addListener('click', function () {
                         //    infowindow.open(map, marker);
                         //});
-                        markersClientes.push({ marker, InformacionCliente });
+                        ClienteCPN.push(marker);
                         //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
 
 
@@ -325,7 +335,7 @@
                         //marker.addListener('click', function () {
                         //    infowindow.open(map, marker);
                         //});
-                        markersClientes.push({ marker, InformacionCliente });
+                        ClienteBanRed.push(marker);
                         //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
 
                         var contentString = '<div id="content">' +
@@ -364,7 +374,7 @@
 
         }
 
-       
+
 
         function geoLocation(map) {
             var infoWindow = new google.maps.InfoWindow({ map: map });
@@ -425,11 +435,49 @@
             heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
         }
 
+        function OcultarCompetencia() {
+            if (esVisibleCompetencia == false) {
+                setMapOnAllCompetencia(map);
+                esVisibleCompetencia = true;
+
+            } else { setMapOnAllCompetencia(null); }
+
+        }
+
+        function OcultarCPN() {
+            if (esVisibleCPN == false) {
+                setMapOnAllCPN(map);
+                esVisibleCPN = true;
+
+            } else { setMapOnAllCPN(null); }
+
+        }
+
+        function setMapOnAllCompetencia(map) {
+            for (var i = 0; i < ClienteBanRed.length; i++) {
+                ClienteBanRed[i].setMap(map);
+            }
+            esVisibleCompetencia = false;
+        }
+
+        function setMapOnAllCPN(map) {
+            for (var i = 0; i < ClienteCPN.length; i++) {
+                ClienteCPN[i].setMap(map);
+            }
+            esVisibleCPN = false;
+        }
+
+
+
+        var esVisibleCompetencia = true;
+        var esVisibleCPN = true;
     </script>
 
 
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIBkXjci-D1Gog6Ez_BkpJcdtEnO1XsBA&libraries=visualization&callback=initMap"
               async defer></script>
+
+
 
 }
