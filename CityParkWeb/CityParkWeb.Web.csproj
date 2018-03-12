@@ -208,6 +208,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationSignInManager.cs" />
     <Compile Include="Controllers\ApplicationUserManager.cs" />
+    <Compile Include="Controllers\CajerosCoperativaController.cs" />
     <Compile Include="Controllers\CajeroCoopPoliciasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -332,6 +333,7 @@
     <Content Include="Content\fonts\fontawesome4.2\readme.txt" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\Alta.png" />
+    <Content Include="Content\images\auto.png" />
     <Content Include="Content\images\Baja.png" />
     <Content Include="Content\images\BanRed.png" />
     <Content Include="Content\images\cajero.jpg" />
@@ -339,7 +341,6 @@
     <Content Include="Content\images\Media.png" />
     <Content Include="Content\images\pin.png" />
     <Content Include="Content\images\trx_alta.png" />
-    <Content Include="Content\images\trx_baja.png" />
     <Content Include="Content\images\trx_media.png" />
     <Content Include="Content\img\ajax-loader.gif" />
     <Content Include="Content\img\alpha.png" />
@@ -652,6 +653,7 @@
     <None Include="Properties\PublishProfiles\DESARROLLOVM - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap\bootstrap.min.js" />
+    <Content Include="Scripts\chat.js" />
     <Content Include="Scripts\DataTables\DataTableInit.js" />
     <Content Include="Scripts\demo.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1263,18 +1265,17 @@
     <Content Include="Views\TiposMultas\Index.cshtml" />
     <Content Include="Views\TiposMultas\Edit.cshtml" />
     <Content Include="Views\TiposMultas\Create.cshtml" />
-    <Content Include="Views\CajeroCoopPolicias\Create.cshtml" />
-    <Content Include="Views\CajeroCoopPolicias\Delete.cshtml" />
-    <Content Include="Views\CajeroCoopPolicias\Details.cshtml" />
-    <Content Include="Views\CajeroCoopPolicias\Edit.cshtml" />
+    <Content Include="Views\CajerosCoperativa\Create.cshtml" />
+    <Content Include="Views\CajerosCoperativa\Delete.cshtml" />
+    <Content Include="Views\CajerosCoperativa\Details.cshtml" />
+    <Content Include="Views\CajerosCoperativa\Edit.cshtml" />
     <Content Include="Views\CajeroCoopPolicias\Index.cshtml" />
-    <Content Include="Views\CajeroCoopPolicias\Recorrido.cshtml" />
-    <Content Include="Views\CajeroCoopPolicias\IndexCajeros.cshtml" />
+    <Content Include="Views\CajerosCoperativa\IndexCajeros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\img\realestate\thumbs\" />
-    <Folder Include="Helpers\" />
+    <Folder Include="fonts\Helpers\" />
     <Folder Include="Seguridad\" />
     <Folder Include="Views\Empresas\" />
   </ItemGroup>
@@ -1293,6 +1294,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\images\trx_baja.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

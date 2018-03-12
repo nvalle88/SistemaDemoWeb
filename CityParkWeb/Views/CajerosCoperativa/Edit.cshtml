@@ -1,0 +1,345 @@
+﻿@model CityParkWeb.ModelosDatos.CajeroCoopPolicia
+
+@{
+    /**/
+
+    ViewBag.Title = "Edit";
+}
+
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Latitud)
+    @Html.HiddenFor(model => model.Longitud)
+
+
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <script src="~/Scripts/jquery-1.11.1.js"></script>
+
+    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
+
+    <script src="~/Scripts/jquery-2.1.1.js"></script>
+
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+
+    <link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.min.css" />
+
+    <link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.css" />
+
+    <script src="~/Scripts/libs/waitMe/waitMe.min.js"></script>
+
+    <script src="~/Scripts/Site.js"></script>
+
+
+    <style>
+
+        #map_container {
+            position: relative;
+        }
+
+
+
+        #map {
+            height: 0;
+            overflow: hidden;
+            padding-bottom: 30.25%;
+            padding-top: 10px;
+            position: relative;
+        }
+    </style>
+
+    <div id="content">
+
+        <div class="row">
+
+            <div class="col-sm-12">
+
+                <div class="well">
+
+                    <legend>Cajero</legend>
+
+                    <section id="widget-grid" class="">
+
+                        <div class="row">
+
+                            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                                <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-close="false" data-widget-custombutton="false">
+
+                                    <header draggable="true">
+
+                                        <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+
+                                        <h2>Seleccione el Cajero con click sobre el mapa</h2>
+
+                                    </header>
+
+                                    <div>
+
+                                        <div class="jarviswidget-editbox">
+
+                                        </div>
+
+                                        <div class="widget-body no-padding">
+
+                                            <fieldset>
+
+                                                <div class="row">
+
+                                                    <div class="col-sm-12">
+
+                                                        <div id="map_container"></div>
+
+                                                        <div id="map"></div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </fieldset>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+                        </div>
+
+                    </section>
+
+                    <section id="widget-grid1" class="">
+
+                        <div class="row">
+
+                            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                                <form id="checkout-form" method="post" class="smart-form" novalidate="novalidate">
+
+                                    <div class="row">
+
+                                        <section class="col col-lg-6">
+
+                                            <label>Codigo</label>
+
+                                            <label class="input">
+
+
+                                                @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre", @maxlength = 20 } })
+
+                                                @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
+
+                                            </label>
+
+                                        </section>
+                                        <section class="col col-lg-6">
+
+                                            <label>Modelo</label>
+
+                                            <label class="input">
+
+
+                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo", @maxlength = 8 } })
+
+                                                @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+
+                                            </label>
+
+                                        </section>
+
+                                    </div>
+
+                                </form>
+
+                            </article>
+
+                        </div>
+
+                    </section>
+
+                    <footer>
+
+                        <button  id="Editar" class="btn btn-primary">
+
+                            Actualizar
+                        </button>
+
+                        @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
+
+                    </footer>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    @section pagespecific {
+
+
+    <script>
+
+            var opcion = 1;
+            var MyMarker;
+
+        function initMap() {
+
+
+            var lat1 = $("#Latitud").val().replace(",",".");
+            var log = $("#Longitud").val().replace(",", ".");
+            var myLatLng = { lat: parseFloat(lat1), lng: parseFloat(log) };
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: myLatLng
+            });
+            //geoLocation(map);
+
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,
+                        map: map,
+                    });
+                    var contentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                        '<img src="../Content/images/cajero.jpg" />' + '<legend></legend>' +
+                        '<div id="bodyContent">' +
+                        '<p><b>C&oacute;digo:&nbsp&nbsp</b>' + "@Model.Codigo" + '.</p>' +
+                        '<p><b>Modelo:</b>' + "@Model.Modelo" + '.</p>' +
+
+                        '</div>' +
+                        '</div>';
+                    var infowindow = new google.maps.InfoWindow();
+
+                    google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
+                        // !!! PROBLEM HERE
+                        return function (evt) {
+
+                            infowindow.setContent(contentString);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, contentString, infowindow));
+
+
+
+                    map.addListener('click', function (e) {
+                        placeMarkerAndPanTo(e.latLng, map);
+                    });
+
+                    map.addListener('click', function (e) {
+                        placeMarkerAndPanTo(e.latLng, map);
+                    });
+
+
+        }
+
+        function placeMarkerAndPanTo(latLng, map) {
+
+                if (opcion == 2) {
+                    marker.setPosition(latLng);
+
+                } else {
+
+                    opcion = 2;
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                    });
+
+                    MyMarker = marker;
+
+                    map.panTo(latLng);
+
+                }
+            }
+
+        var nombre;
+        var modelo;
+
+        var cordenadas;
+
+
+
+
+
+
+
+
+    </script>
+
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7xHSOffrWxVEax1kniS5-OxrWCuF4JU&libraries=drawing&callback=initMap"
+                async defer></script>
+
+        <script type="text/javascript">
+            $("#Editar").click(function () {
+
+                var latitud = MyMarker.position.lat();
+                var longitud = MyMarker.position.lng();
+                var flatitud;
+                var flongitud;
+
+                if ($("#nombre").val() != "" && $("#modelo").val() != "" && latitud != "" && longitud != "") {
+
+                    $.ajax({
+
+                        type: 'POST',
+
+                        url: href = '@Url.Action("Edit")',
+
+                        dataType: 'json',
+
+                        data: { flatitud: latitud, flongitud: longitud,nombreCajero: $("#nombre").val(), modelocajero: $("#modelo").val() },
+
+                        success: function (data) {
+
+                            if (data == true) {
+
+                                location.href = '@Url.Action("IndexCajeros")';
+
+                            }
+
+                        }, complete: function (data) {
+
+                            $("#content").waitMe("hide");
+
+                        },
+
+                        error: function (ex) {
+
+                            alert('Failed to retrieve data.' + ex);
+
+                        }
+
+                    });
+
+                } else {
+
+                    alert("Tiene que introducir el nombre del cajero ")
+
+                    return false;
+
+                }
+
+            })
+        </script>
+
+    }
