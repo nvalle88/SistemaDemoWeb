@@ -652,7 +652,6 @@
     <None Include="Properties\PublishProfiles\DESARROLLOVM - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap\bootstrap.min.js" />
-    <Content Include="Scripts\chat.js" />
     <Content Include="Scripts\DataTables\DataTableInit.js" />
     <Content Include="Scripts\demo.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1269,7 +1268,6 @@
     <Content Include="Views\CajeroCoopPolicias\Details.cshtml" />
     <Content Include="Views\CajeroCoopPolicias\Edit.cshtml" />
     <Content Include="Views\CajeroCoopPolicias\Index.cshtml" />
-    <Content Include="Views\CajeroCoopPolicias\VerMisCajeros.cshtml" />
     <Content Include="Views\CajeroCoopPolicias\Recorrido.cshtml" />
     <Content Include="Views\CajeroCoopPolicias\IndexCajeros.cshtml" />
   </ItemGroup>
