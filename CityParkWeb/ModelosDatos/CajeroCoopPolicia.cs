@@ -9,6 +9,8 @@ namespace CityParkWeb.ModelosDatos
     [Table("CajeroCoopPolicia")]
     public partial class CajeroCoopPolicia
     {
+        public string Clasificacion { get; set; }
+
         [StringLength(20)]
         public string Provincia { get; set; }
 
@@ -42,5 +44,6 @@ namespace CityParkWeb.ModelosDatos
         public int? TrxBanred { get; set; }
 
         public int Id { get; set; }
+
     }
 }
