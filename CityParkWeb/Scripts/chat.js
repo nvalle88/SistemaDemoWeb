@@ -168,14 +168,9 @@
                             '<div id="siteNotice">' +
                             '</div>' +
                             '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
-                            '<img src="../Content/images/cajero.jpg" />' + '<legend></legend>' +
                             '<div id="bodyContent">' +
-                            '<p><b>Codigo:&nbsp&nbsp</b>' + InformacionCliente.Codigo + '.</p>' +
-                            '<p><b>Direccion:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
-                            '<p><b>Tipo:&nbsp&nbsp</b>' + InformacionCliente.Tipo + '.</p>' +
-                            '<p><b>Modelo:&nbsp&nbsp</b>' + InformacionCliente.Modelo + '.</p>' +
-                            '<p><b>TrxPropia:&nbsp&nbsp</b>' + InformacionCliente.TrxPropia + '.</p>' +
-                            '<p><b>TrxBanred:&nbsp&nbsp</b>' + InformacionCliente.TrxBanred + '.</p>' +
+                            '<p><b>Entidad:&nbsp&nbsp</b>' + InformacionCliente.Entidad + '.</p>' +
+                            
 
                             '</div>' +
                             '</div>';
