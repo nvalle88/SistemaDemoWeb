@@ -1,20 +1,14 @@
 ﻿@model CityParkWeb.ModelosDatos.CajeroCoopPolicia
 
 @{
-    /**/
-
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Details";
 }
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
+
     @Html.HiddenFor(model => model.Latitud)
     @Html.HiddenFor(model => model.Longitud)
-
-
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
 
     <script src="~/Scripts/jquery-3.2.1.js"></script>
@@ -68,7 +62,7 @@
 
                 <div class="well">
 
-                    <legend>Cajero Nuevo</legend>
+                    <legend>Cajero</legend>
 
                     <section id="widget-grid" class="">
 
@@ -82,7 +76,7 @@
 
                                         <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
 
-                                        <h2>Seleccione el Cajero con click sobre el mapa</h2>
+                                        <h2>Ubicacion del Cajero en el mapa</h2>
 
                                     </header>
 
@@ -134,30 +128,20 @@
 
                                         <section class="col col-lg-6">
 
-                                            <label>Nombre del Cajero</label>
+                                            <label>Codigo:</label>
 
                                             <label class="input">
-
-                                                <i class="icon-prepend fa fa-map-marker"></i>
-
-                                                @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre" } })
-
-                                                @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
-
+                                                @Html.DisplayFor(model => model.Codigo)
                                             </label>
 
                                         </section>
                                         <section class="col col-lg-6">
 
-                                            <label>Modelo</label>
+                                            <label>Modelo:</label>
 
                                             <label class="input">
 
-                                                <i class="icon-prepend fa fa-map-marker"></i>
-
-                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo" } })
-
-                                                @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+                                                @Html.DisplayFor(model => model.Modelo)
 
                                             </label>
 
@@ -175,10 +159,6 @@
 
                     <footer>
 
-                        <button type="submit" id="Create" class="btn btn-primary">
-
-                            Insertar
-                        </button>
 
                         @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
 
@@ -227,14 +207,16 @@
                 // Browser doesn't support Geolocation
                 handleLocationError(false, infoWindow, map.getCenter());
             }
-        }
+            }
+
+
 
         function initMap() {
 
-            var icon2 =
+            var icon123 =
                 {
                     //con el icono
-                    url: "../Content/images/trx_baja.png", // url
+                    url: "../Content/images/auto.png", // url
                     size: new google.maps.Size(96, 96),
                     scaledSize: new google.maps.Size(96, 96), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
@@ -250,13 +232,13 @@
                 center: myLatLng
             });
             //geoLocation(map);
-            
+
                     var marker = new google.maps.Marker({
                         position: myLatLng,
+                        
                         map: map,
-                        title: "a",
-                        icon: icon2,     
             });
+
                     marker.addListener('click', function () {
 
                         infowindow.open(map, marker);

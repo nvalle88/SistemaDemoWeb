@@ -11,61 +11,18 @@ using CityParkWeb.ModelosDatos;
 
 namespace CityParkWeb.Controllers
 {
-    public class CajeroCoopPoliciasController : Controller
+    public class CajerosCoperativaController : Controller
     {
         private Model db = new Model();
 
         // GET: CajeroCoopPolicias
-        public ActionResult Index()
-        {
-            return View(db.CajeroCoopPolicia.ToList());
-        }
+        
         public ActionResult IndexCajeros()
         {
             return View(db.CajeroCoopPolicia.ToList());
         }
 
-        public async Task<JsonResult> GetCajeros()
-        {
-            var response = db.CajeroCoopPolicia.ToList();
-
-            if (response == null || response.Count == 0)
-            {
-                return Json(false);
-            }
-
-            return Json(response);
-        }
-
-        public async Task<JsonResult> GetCajerosBanRed()
-        {
-            var response = db.CajeroCompetencia.ToList();
-
-            if (response == null || response.Count == 0)
-            {
-                return Json(false);
-            }
-
-            return Json(response);
-        }
-
-        public async Task<JsonResult> GetPuntosMapaCalor()
-        {
-            var response = db.MapaConcentracion.ToList();
-
-            if (response == null || response.Count == 0)
-            {
-                return Json(false);
-            }
-
-            return Json(response);
-        }
-
-        public ActionResult Recorrido()
-        {
-            return View();
-        }
-
+       
         // GET: CajeroCoopPolicias/Details/5
         public ActionResult Details(int? id)
         {
@@ -138,21 +95,7 @@ namespace CityParkWeb.Controllers
             return View(cajeroCoopPolicia);
         }
 
-        // POST: CajeroCoopPolicias/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(CajeroCoopPolicia cajeroCoopPolicia)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(cajeroCoopPolicia).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("IndexCajeros");
-        //    }
-        //    return View(cajeroCoopPolicia);
-        //}
+        
         [HttpPost]
         public async Task<JsonResult> Edit(string nombreCajero, string modelocajero, string flatitud, string flongitud, int id)
         {

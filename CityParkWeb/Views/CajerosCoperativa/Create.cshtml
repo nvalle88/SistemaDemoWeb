@@ -127,13 +127,13 @@
 
                                     <section class="col col-lg-6">
 
-                                        <label>Nombre del Cajero</label>
+                                        <label>Codigo</label>
 
                                         <label class="input">
 
                                             <i class="icon-prepend fa fa-map-marker"></i>
 
-                                            @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre" } })
+                                            @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre ", @maxlength = 20 } })
 
                                             @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
 
@@ -148,9 +148,9 @@
 
                                             <i class="icon-prepend fa fa-map-marker"></i>
 
-                                            @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo" } })
+                                            @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo", @maxlength = 8 } })
 
-                                            @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+                                            @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger"  })
 
                                         </label>
 
@@ -236,8 +236,7 @@
         }
 
         function placeMarkerAndPanTo(latLng, map) {
-
-
+            
             if (opcion == 1) {
                 marker.setPosition(latLng);
 
@@ -258,8 +257,7 @@
                     map: map,
                     icon: icon1,
                 });
-
-
+                
                 MyMarker = marker;
 
                 map.panTo(latLng);
@@ -277,21 +275,6 @@
 
 
             $("#Create").click(function () {
-
-                //$('#content').waitMe({
-
-                //    effect: 'roundBounce',
-
-                //    text:'Procesando datos, por favor espere...',
-
-                //    bg: 'rgba(255, 255, 255, 0.7)',
-
-                //    color: '#ef4c0c'
-
-                //});
-
-                //var a = $("#nombre").val();
-                //var b = $("#modelo").val();
 
                 var latitud = MyMarker.position.lat();
                 var longitud = MyMarker.position.lng();
@@ -314,7 +297,7 @@
 
                             if (data == true) {
 
-                                location.href = '@Url.Action("Index")';
+                                location.href = '@Url.Action("IndexCajeros")';
 
                             }
 
