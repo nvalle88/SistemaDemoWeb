@@ -172,17 +172,35 @@
 
             var iconCompetencia =
                 {
-                    url: "../Content/images/trx_baja.png", // url
+                    url: "../Content/images/BanRed.png", // url
                     size: new google.maps.Size(96, 96),
                     scaledSize: new google.maps.Size(96, 96), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(48, 48) // anchor
                 };
 
-            var iconClientes =
+            var iconBaja =
                 {
                     //con el icono 
-                    url: "../Content/images/trx_media.png", // url
+                    url: "../Content/images/Alta.png", // url
+                    size: new google.maps.Size(96, 96),
+                    scaledSize: new google.maps.Size(96, 96), // scaled size
+                    origin: new google.maps.Point(0, 0), // origin
+                    anchor: new google.maps.Point(48, 48) // anchor
+                };
+            var iconMedia =
+                {
+                    //con el icono 
+                    url: "../Content/images/Media.png", // url
+                    size: new google.maps.Size(96, 96),
+                    scaledSize: new google.maps.Size(96, 96), // scaled size
+                    origin: new google.maps.Point(0, 0), // origin
+                    anchor: new google.maps.Point(48, 48) // anchor
+                };
+            var iconAlta =
+                {
+                    //con el icono 
+                    url: "../Content/images/Baja.png", // url
                     size: new google.maps.Size(96, 96),
                     scaledSize: new google.maps.Size(96, 96), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
@@ -252,13 +270,12 @@
                                 TrxPropia: arreglo[i].TrxPropia,
                                 TrxBanred: arreglo[i].TrxBanred,
                             }
+
                         var marker = new google.maps.Marker({
                             position: pos,
                             map: map,
                             title: InformacionCliente.Nombre,
-                            icon: iconClientes,
-
-
+                            icon: iconBaja,
                         });
 
 
