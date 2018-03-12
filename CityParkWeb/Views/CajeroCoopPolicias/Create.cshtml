@@ -1,198 +1,353 @@
 ﻿@model CityParkWeb.ModelosDatos.CajeroCoopPolicia
 
 @{
-    ViewBag.Title = "Create";
+
+    ViewBag.Title = "Home";
+
 }
 
-@using (Html.BeginForm())
-{
-    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
-    <script src="~/signalr/hubs"></script>
-    <script src="~/Scripts/chat.js"></script>
-    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
-    <script src="~/Scripts/jquery-3.2.1.js"></script>
-    <script src="~/Scripts/jquery-1.10.2.js"></script>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/jquery-1.11.1.js"></script>
-    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
-    <script src="~/Scripts/jquery-2.1.1.js"></script>
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
-    <link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.min.css" />
-    <link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.css" />
-    <script src="~/Scripts/libs/waitMe/waitMe.min.js"></script>
-    <script src="~/Scripts/Site.js"></script>
-
-    <style>
-        #map_container {
-            position: relative;
-        }
-
-        #map {
-            height: 0;
-            overflow: hidden;
-            padding-bottom: 40.25%;
-            padding-top: 30px;
-            position: relative;
-        }
-
-        .pac-container {
-            z-index: 99999;
-        }
-    </style>
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-
-        <section id="widget-grid" class="">
-            <div class="row">
-                <article class="col-sm-6 col-md-12 col-lg-12">
-                    <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
-                        <header draggable="true">
-                            <span class="widget-icon"> <i class="fa fa-map-marker"></i></span>
-                            <h2>Ubicacion Actual del Nuevo Cajero</h2>
-
-                        </header>
-                        <div>
-                            <div class="row">
-                                <div class="col-sm-6">
 
 
-                                    <div id="map_container"></div>
-                                    <div id="map"></div>
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+
+<script src="~/Scripts/jquery-3.2.1.js"></script>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script src="~/Scripts/jquery-1.11.1.js"></script>
+
+<script src="~/Scripts/jquery-1.11.1.min.js"></script>
+
+<script src="~/Scripts/jquery-2.1.1.js"></script>
+
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+
+<link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.min.css" />
+
+<link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.css" />
+
+<script src="~/Scripts/libs/waitMe/waitMe.min.js"></script>
+
+<script src="~/Scripts/Site.js"></script>
+
+
+
+
+
+<style>
+
+    #map_container {
+        position: relative;
+    }
+
+
+
+    #map {
+        height: 0;
+        overflow: hidden;
+        padding-bottom: 30.25%;
+        padding-top: 10px;
+        position: relative;
+    }
+</style>
+
+<div id="content">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="well">
+
+                <legend>Cajero Nuevo</legend>
+
+                <section id="widget-grid" class="">
+
+                    <div class="row">
+
+                        <article class="col-sm-12 col-md-12 col-lg-12">
+
+                            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-close="false" data-widget-custombutton="false">
+
+                                <header draggable="true">
+
+                                    <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+
+                                    <h2>Seleccione el Cajero con click sobre el mapa</h2>
+
+                                </header>
+
+                                <div>
+
+                                    <div class="jarviswidget-editbox">
+
+                                    </div>
+
+                                    <div class="widget-body no-padding">
+
+                                        <fieldset>
+
+                                            <div class="row">
+
+                                                <div class="col-sm-12">
+
+                                                    <div id="map_container"></div>
+
+                                                    <div id="map"></div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </fieldset>
+
+                                    </div>
+
                                 </div>
+
                             </div>
 
-                        </div>
+                        </article>
+
                     </div>
-                </article>
-            </div>
-        </section>
 
-        <langen>Nuevo cajero</langen>
-        <hr />
-        <div class="row">
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Provincia, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Provincia, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Provincia, "", new { @class = "text-danger" })
-                </div>
+                </section>
+
+                <section id="widget-grid1" class="">
+
+                    <div class="row">
+
+                        <article class="col-sm-12 col-md-12 col-lg-12">
+
+                            <form id="checkout-form" method="post" class="smart-form" novalidate="novalidate">
+
+                                <div class="row">
+
+                                    <section class="col col-lg-6">
+
+                                        <label>Nombre del Cajero</label>
+
+                                        <label class="input">
+
+                                            <i class="icon-prepend fa fa-map-marker"></i>
+
+                                            @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre" } })
+
+                                            @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
+
+                                        </label>
+
+                                    </section>
+                                    <section class="col col-lg-6">
+
+                                        <label>Modelo</label>
+
+                                        <label class="input">
+
+                                            <i class="icon-prepend fa fa-map-marker"></i>
+
+                                            @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo" } })
+
+                                            @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+
+                                        </label>
+
+                                    </section>
+
+                                </div>
+
+                            </form>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <footer>
+
+                    <button type="submit" id="Create" class="btn btn-primary">
+
+                        Insertar
+                    </button>
+
+                    @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
+
+                </footer>
+
             </div>
 
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Canton, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Canton, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Canton, "", new { @class = "text-danger" })
-                </div>
-            </div>
+
+
         </div>
-        <div class="row">
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Sector, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Sector, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Sector, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Codigo, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Ubicación, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Ubicación, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Ubicación, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Direccion, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Tipo, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Tipo, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Modelo, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Latitud, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Latitud, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Latitud, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.Longitud, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Longitud, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Longitud, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.TrxPropia, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.TrxPropia, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.TrxPropia, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                @Html.LabelFor(model => model.TrxBanred, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.TrxBanred, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.TrxBanred, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <footer>
-            <input type="submit" value="Guardar" class="btn btn-primary" />
-            @Html.ActionLink("Cancelar", "Index")
-
-        </footer>
 
     </div>
+
+</div>
+
+
+
+
+
+@section pagespecific {
+
+
+
+
+
     <script>
-        var map;
-        var empresa;
+        var opcion = 0;
+        var MyMarker;
+        function geoLocation(map) {
+            var infoWindow = new google.maps.InfoWindow({ map: map });
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Posici&oacute;n actual');
+                    map.setCenter(pos);
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function initMap() {
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: { lat: -0.225219, lng: -78.5248 }
+            });
+            geoLocation(map);
+
+            map.addListener('click', function (e) {
+                placeMarkerAndPanTo(e.latLng, map);
+            });
+
+        }
+
+        function placeMarkerAndPanTo(latLng, map) {
+
+
+            if (opcion == 1) {
+                marker.setPosition(latLng);
+
+            } else {
+
+                opcion = 1;
+                var icon1 =
+                    {
+                        //con el icono
+                        url: "../Content/images/trx_baja.png", // url
+                        size: new google.maps.Size(96, 96),
+                        scaledSize: new google.maps.Size(96, 96), // scaled size
+                        origin: new google.maps.Point(0, 0), // origin
+                        anchor: new google.maps.Point(48, 48) // anchor
+                    };
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    icon: icon1,
+                });
+
+
+                MyMarker = marker;
+
+                map.panTo(latLng);
+            }
+        }
+
+
+
+        var nombre;
+        var modelo;
+
+        var cordenadas;
+
+        $(document).ready(function () {
+
+
+            $("#Create").click(function () {
+
+                //$('#content').waitMe({
+
+                //    effect: 'roundBounce',
+
+                //    text:'Procesando datos, por favor espere...',
+
+                //    bg: 'rgba(255, 255, 255, 0.7)',
+
+                //    color: '#ef4c0c'
+
+                //});
+
+                //var a = $("#nombre").val();
+                //var b = $("#modelo").val();
+
+                var latitud = MyMarker.position.lat();
+                var longitud = MyMarker.position.lng();
+                var flatitud;
+                var flongitud;
+
+                if ($("#nombre").val() != "" && $("#modelo").val() != "" && latitud != "" && longitud != "") {
+
+                    $.ajax({
+
+                        type: 'POST',
+
+                        url: href = '@Url.Action("Create")',
+
+                        dataType: 'json',
+
+                        data: { flatitud: latitud, flongitud: longitud,nombreCajero: $("#nombre").val(), modelocajero: $("#modelo").val() },
+
+                        success: function (data) {
+
+                            if (data == true) {
+
+                                location.href = '@Url.Action("Index")';
+
+                            }
+
+                        }, complete: function (data) {
+
+                            $("#content").waitMe("hide");
+
+                        },
+                        
+                        error: function (ex) {
+
+                            alert('Failed to retrieve data.' + ex);
+
+                        }
+
+                    });
+
+                } else {
+
+                    alert("Tiene que introducir el nombre del cajero ")
+
+                    return false;
+
+                }
+
+            })
+
+        })
 
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIBkXjci-D1Gog6Ez_BkpJcdtEnO1XsBA&callback=initMap"
-              async defer></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7xHSOffrWxVEax1kniS5-OxrWCuF4JU&libraries=drawing&callback=initMap"
+            async defer></script>
+
 }
-
-
-
-@*@section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }*@
