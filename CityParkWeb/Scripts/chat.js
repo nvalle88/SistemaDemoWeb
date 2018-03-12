@@ -14,12 +14,13 @@
         });
         geoLocation(map);
 
-        var icon1 =
+        var iconCompetencia =
             {
-                url: "../Content/images/ic_policeman.png", // url
-                scaledSize: new google.maps.Size(70, 70), // scaled size
+                url: "../Content/images/trx_baja.png", // url
+                size: new google.maps.Size(96, 96),
+                scaledSize: new google.maps.Size(96, 96), // scaled size
                 origin: new google.maps.Point(0, 0), // origin
-                anchor: new google.maps.Point(0, 0) // anchor
+                anchor: new google.maps.Point(48, 48) // anchor
             };
 
         var iconClientes =
@@ -38,7 +39,9 @@
         markersAgentes = [];
         markersClientes = [];
         clientecarga();
-        //Se carga la información de los clientes
+        clientecargaBanRed();
+
+        ///Se carga la información de los cajeros
         function clientecarga () {
             $.ajax({
                 type: 'POST',
@@ -120,10 +123,86 @@
                 }
             });
         };
-        
-        
 
-        
+        function clientecargaBanRed() {
+            $.ajax({
+                type: 'POST',
+                url: '../CajeroCoopPolicias/GetCajerosBanRed',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    arreglo = data;
+
+                }, complete: function (data) {
+
+                    for (var i = 0; i < arreglo.length; i++) {
+
+                        var marker;
+                        var pos = { lat: arreglo[i].Altitud, lng: arreglo[i].Longitud };
+                        var InformacionCliente =
+                            {
+
+                                Lat: arreglo[i].Altitud,
+                                Lon: arreglo[i].Longitud,
+                                Entidad: arreglo[i].Entidad,
+                              
+                            }
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            title: InformacionCliente.Entidad,
+                            icon: iconCompetencia,
+
+
+                        });
+
+
+                        //marker.addListener('click', function () {
+                        //    infowindow.open(map, marker);
+                        //});
+                        markersClientes.push({ marker, InformacionCliente });
+                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
+
+
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
+                            '<img src="../Content/images/cajero.jpg" />' + '<legend></legend>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Codigo:&nbsp&nbsp</b>' + InformacionCliente.Codigo + '.</p>' +
+                            '<p><b>Direccion:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
+                            '<p><b>Tipo:&nbsp&nbsp</b>' + InformacionCliente.Tipo + '.</p>' +
+                            '<p><b>Modelo:&nbsp&nbsp</b>' + InformacionCliente.Modelo + '.</p>' +
+                            '<p><b>TrxPropia:&nbsp&nbsp</b>' + InformacionCliente.TrxPropia + '.</p>' +
+                            '<p><b>TrxBanred:&nbsp&nbsp</b>' + InformacionCliente.TrxBanred + '.</p>' +
+
+                            '</div>' +
+                            '</div>';
+                        var infowindow = new google.maps.InfoWindow();
+
+                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
+                            // !!! PROBLEM HERE
+                            return function (evt) {
+
+                                infowindow.setContent(contentString);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, contentString, infowindow));
+                        //markersClientes[i].marker.setListener('click', function () {
+                        //    infowindow.open(map, markersClientes[i].marker);
+                        //});
+
+                    }
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data.' + ex);
+                }
+            });
+        };
+
+
 
         //this is the function that's run when the "messageReceived" function is called from the server
         chat.client.messageReceived = function (livePositionRequest) {
