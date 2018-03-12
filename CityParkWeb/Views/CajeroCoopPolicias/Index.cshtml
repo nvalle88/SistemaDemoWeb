@@ -91,13 +91,13 @@
                                                        checked="checked" />
 
                                                 <label><b>Cajeros CPN:</b></label>
-                                                <input onclick="toggleHeatmap()"
+                                                <input onclick="OcultarCPN()"
                                                        type="checkbox"
                                                        value="true"
                                                        checked="checked" />
 
                                                 <label><b> Competencia:</b></label>
-                                                <input onclick="toggleHeatmap()"
+                                                <input onclick="OcultarCompetencia()"
                                                        type="checkbox"
                                                        value="true"
                                                        checked="checked" />
@@ -135,6 +135,8 @@
         a = 0;
         markersAgentes = [];
         markersClientes = [];
+        ClienteCPN = [];
+        ClienteBanRed = [];
 
         var map;
         var heatmap;
@@ -249,7 +251,7 @@
                         //marker.addListener('click', function () {
                         //    infowindow.open(map, marker);
                         //});
-                        markersClientes.push({ marker, InformacionCliente });
+                        ClienteCPN.push(marker);
                         //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
 
 
@@ -325,7 +327,7 @@
                         //marker.addListener('click', function () {
                         //    infowindow.open(map, marker);
                         //});
-                        markersClientes.push({ marker, InformacionCliente });
+                        ClienteBanRed.push(marker);
                         //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
 
                         var contentString = '<div id="content">' +
@@ -425,6 +427,41 @@
             heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
         }
 
+        function OcultarCompetencia() {
+            if (esVisibleCompetencia == false) {
+                setMapOnAllCompetencia(map);
+                esVisibleCompetencia = true;
+
+            } else { setMapOnAllCompetencia(null);}
+            
+        }
+
+        function OcultarCPN() {
+            if (esVisibleCPN == false) {
+                setMapOnAllCPN(map);
+                esVisibleCPN = true;
+
+            } else { setMapOnAllCPN(null); }
+
+        }
+
+        function setMapOnAllCompetencia(map) {
+            for (var i = 0; i < ClienteBanRed.length; i++) {
+                ClienteBanRed[i].setMap(map);
+            }
+            esVisibleCompetencia = false;
+        }
+
+        function setMapOnAllCPN(map) {
+            for (var i = 0; i < ClienteCPN.length; i++) {
+                ClienteCPN[i].setMap(map);
+            }
+            esVisibleCPN = false;
+        }
+
+
+        var esVisibleCompetencia = true;
+        var esVisibleCPN = true;
     </script>
 
 
