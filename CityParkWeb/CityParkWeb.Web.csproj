@@ -1266,6 +1266,7 @@
     <Content Include="Views\CajeroCoopPolicias\Index.cshtml" />
     <Content Include="Views\CajeroCoopPolicias\VerMisCajeros.cshtml" />
     <Content Include="Views\CajeroCoopPolicias\Recorrido.cshtml" />
+    <Content Include="Views\CajeroCoopPolicias\IndexCajeros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

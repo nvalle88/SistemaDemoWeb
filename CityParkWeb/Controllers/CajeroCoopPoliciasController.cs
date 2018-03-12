@@ -20,6 +20,10 @@ namespace CityParkWeb.Controllers
         {
             return View(db.CajeroCoopPolicia.ToList());
         }
+        public ActionResult IndexCajeros()
+        {
+            return View(db.CajeroCoopPolicia.ToList());
+        }
 
         public async Task<JsonResult> GetCajeros()
         {
@@ -75,29 +79,30 @@ namespace CityParkWeb.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create( CajeroCoopPolicia cajeroCoopPolicia)
+        //[ValidateAntiForgeryToken]
+        public JsonResult Create( string nombreCajero,string modelocajero, string flatitud, string flongitud)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.CajeroCoopPolicia.Add(cajeroCoopPolicia);
+                var a = new CajeroCoopPolicia
+                {
+                    Longitud = Convert.ToDouble( flongitud.Replace(".", ",")),
+                    Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
+                    Codigo = nombreCajero,
+                    Modelo = modelocajero
+                    
+                };
+                db.CajeroCoopPolicia.Add(a);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Json(true);
             }
-
-            return View(cajeroCoopPolicia);
-        }
-        public ActionResult CrearCajeros(CajeroCoopPolicia cajeroCoopPolicia)
-        {
-            if (ModelState.IsValid)
+            catch (Exception)
             {
-                db.CajeroCoopPolicia.Add(cajeroCoopPolicia);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            return View(cajeroCoopPolicia);
+                return Json(false);
+            }
         }
+        
 
         // GET: CajeroCoopPolicias/Edit/5
         public ActionResult Edit(int? id)
@@ -106,11 +111,14 @@ namespace CityParkWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+           
             CajeroCoopPolicia cajeroCoopPolicia = db.CajeroCoopPolicia.Find(id);
             if (cajeroCoopPolicia == null)
             {
                 return HttpNotFound();
             }
+            cajeroCoopPolicia.Latitud.ToString().Replace(",",".");
+            cajeroCoopPolicia.Latitud.ToString().Replace(",", ".");
             return View(cajeroCoopPolicia);
         }
 
