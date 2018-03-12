@@ -36,93 +36,45 @@
         padding-top: 30px;
         position: relative;
     }
+        #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: inherit 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 5px;
+        padding-left: 5px;
+    }
 
+    #floating-panel {
+        background-color: #fff;
+        border: 1px solid #999;
+        left: 25%;
+        padding: 5px;
+        position: absolute;
+        top: 10px;
+        z-index: 5;
+    }
     .pac-container {
         z-index: 99999;
     }
 </style>
 
 <div id="content">
-    <div class="row">
 
-        <article class="col-sm-12 col-md-12 col-lg-12">
-            <fieldset>
-                <legend>Nivel socioeconómico</legend>
-                <button onclick="toggleHeatmap()" >Ocultar/Mostrar</button>
-                <button onclick="changeGradient()">Cambiar gradiente</button>
-                <button onclick="changeRadius()">Cambiar influencia</button>
-                <button onclick="changeOpacity()">Cambiar opacidad</button>
-            </fieldset>
-        </article>
-    </div>
-    @*<div class="alert alert-block alert-info">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Informaci&oacute;n</h4>
-            <p>
-                Usted puede obserbar los vendedores en tiempo real as&iacute; como la ubicaci&oacute;n de los clientes !!!
-            </p>
-            <p>
-                * Click sobre <b>VENDEDORES</b> y <b>CLIENTES</b> para vizualizar su informaci&oacute;n !!!
-            </p>
-        </div>*@
     <div class="row">
         <div class="col-sm-12">
-            <div class="well">
-                <legend>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11">
-                            <h4 class="page-title txt-color-blueDark">
-                                <i class="fa-fw fa fa-fax"></i>
-                                Cajeros
-
-
-
-                            </h4>
-                            <div class="row">
-
-                                <article class="col-sm-12 col-md-12 col-lg-12">
-                                    <fieldset>
-                                        Mis Cajeros
-                                        <input data-val="true"
-                                               data-val-required="The isNewlyEnrolled field is required."
-                                               id="isNewlyEnrolled"
-                                               name="isNewlyEnrolled"
-                                               type="checkbox"
-                                               value="true" />
-                                        Cajeros BanRed
-
-                                        <input data-val="true"
-                                               data-val-required="The isNewlyEnrolled field is required."
-                                               id="isNewlyEnrolled"
-                                               name="isNewlyEnrolled"
-                                               type="checkbox"
-                                               value="true" />
-
-                                        <a href="" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-refresh"></i></a>
-                                    </fieldset>
-                                </article>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
-                            <h4 class="page-title txt-color-black">
-
-                                <span>
-
-                                </span>
-
-                            </h4>
-                        </div>
-
-                    </div>
-                </legend>
-
                 <section id="widget-grid" class="">
                     <div class="row">
                         <article class="col-sm-12 col-md-12 col-lg-12">
                             <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-close="false" data-widget-custombutton="false">
                                 <header draggable="true">
                                     <span class="widget-icon"> <i class="fa fa-map-marker"></i></span>
-                                    <h2>Click en el vendedor para ver la descripci&oacute;n</h2>
+                                    <h2>Click en el cajero para ver la descripci&oacute;n</h2>
 
                                 </header>
                                 <div>
@@ -130,6 +82,26 @@
                                     </div>
                                     <div class="widget-body no-padding">
                                         <fieldset>
+                                            <div id="floating-panel">
+                                                
+                                                <label><b>Mapa de Calor:</b></label>
+                                                <input onclick="toggleHeatmap()"
+                                                       type="checkbox"
+                                                       value="true"
+                                                       checked="checked" />
+
+                                                <label><b>Cajeros CPN:</b></label>
+                                                <input onclick="toggleHeatmap()"
+                                                       type="checkbox"
+                                                       value="true"
+                                                       checked="checked" />
+
+                                                <label><b> Competencia:</b></label>
+                                                <input onclick="toggleHeatmap()"
+                                                       type="checkbox"
+                                                       value="true"
+                                                       checked="checked" />
+                                            </div>
                                             <div class="row">
                                                 <div class="col-sm-12">
 
@@ -145,8 +117,6 @@
                         </article>
                     </div>
                 </section>
-                <footer></footer>
-            </div>
 
         </div>
     </div>
@@ -394,161 +364,7 @@
 
         }
 
-        function clientecarga() {
-            $.ajax({
-                type: 'POST',
-                url: '../CajeroCoopPolicias/GetCajeros',
-                dataType: 'json',
-                data: {},
-                success: function (data) {
-                    arreglo = data;
-
-                }, complete: function (data) {
-
-                    for (var i = 0; i < arreglo.length; i++) {
-
-                        var marker;
-                        var pos = { lat: arreglo[i].Latitud, lng: arreglo[i].Longitud };
-                        var InformacionCliente =
-                            {
-
-                                Lat: arreglo[i].Latitud,
-                                Lon: arreglo[i].Longitud,
-                                Codigo: arreglo[i].Codigo,
-                                Direccion: arreglo[i].Direccion,
-                                Tipo: arreglo[i].Tipo,
-                                Modelo: arreglo[i].Modelo,
-                                TrxPropia: arreglo[i].TrxPropia,
-                                TrxBanred: arreglo[i].TrxBanred,
-                            }
-                        var marker = new google.maps.Marker({
-                            position: pos,
-                            map: map,
-                            title: InformacionCliente.Nombre,
-                            icon: iconClientes,
-
-
-                        });
-
-
-                        //marker.addListener('click', function () {
-                        //    infowindow.open(map, marker);
-                        //});
-                        markersClientes.push({ marker, InformacionCliente });
-                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
-
-
-                        var contentString = '<div id="content">' +
-                            '<div id="siteNotice">' +
-                            '</div>' +
-                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
-                            '<img src="../Content/images/cajero.jpg" />' + '<legend></legend>' +
-                            '<div id="bodyContent">' +
-                            '<p><b>Codigo:&nbsp&nbsp</b>' + InformacionCliente.Codigo + '.</p>' +
-                            '<p><b>Direccion:&nbsp&nbsp</b>' + InformacionCliente.Direccion + '.</p>' +
-                            '<p><b>Tipo:&nbsp&nbsp</b>' + InformacionCliente.Tipo + '.</p>' +
-                            '<p><b>Modelo:&nbsp&nbsp</b>' + InformacionCliente.Modelo + '.</p>' +
-                            '<p><b>TrxPropia:&nbsp&nbsp</b>' + InformacionCliente.TrxPropia + '.</p>' +
-                            '<p><b>TrxBanred:&nbsp&nbsp</b>' + InformacionCliente.TrxBanred + '.</p>' +
-
-                            '</div>' +
-                            '</div>';
-                        var infowindow = new google.maps.InfoWindow();
-
-                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
-                            // !!! PROBLEM HERE
-                            return function (evt) {
-
-                                infowindow.setContent(contentString);
-                                infowindow.open(map, marker);
-                            }
-                        })(marker, contentString, infowindow));
-                        //markersClientes[i].marker.setListener('click', function () {
-                        //    infowindow.open(map, markersClientes[i].marker);
-                        //});
-
-                    }
-                },
-
-                error: function (ex) {
-                    alert('Failed to retrieve data.' + ex);
-                }
-            });
-        };
-
-        function clientecargaBanRed() {
-            $.ajax({
-                type: 'POST',
-                url: '../CajeroCoopPolicias/GetCajerosBanRed',
-                dataType: 'json',
-                data: {},
-                success: function (data) {
-                    arreglo = data;
-
-                }, complete: function (data) {
-
-                    for (var i = 0; i < arreglo.length; i++) {
-
-                        var marker;
-                        var pos = { lat: arreglo[i].Altitud, lng: arreglo[i].Longitud };
-                        var InformacionCliente =
-                            {
-
-                                Lat: arreglo[i].Altitud,
-                                Lon: arreglo[i].Longitud,
-                                Entidad: arreglo[i].Entidad,
-
-                            }
-                        var marker = new google.maps.Marker({
-                            position: pos,
-                            map: map,
-                            title: InformacionCliente.Entidad,
-                            icon: iconCompetencia,
-
-
-                        });
-
-
-                        //marker.addListener('click', function () {
-                        //    infowindow.open(map, marker);
-                        //});
-                        markersClientes.push({ marker, InformacionCliente });
-                        //markersClientes[i].marker.setPosition(new google.maps.LatLng(InformacionCliente.Lat, InformacionCliente.Lon));
-
-
-                        var contentString = '<div id="content">' +
-                            '<div id="siteNotice">' +
-                            '</div>' +
-                            '<h4 id="firstHeading" class="firstHeading"><b>Cajero</b></h4>' +
-                            '<div id="bodyContent">' +
-                            '<p><b>Entidad:&nbsp&nbsp</b>' + InformacionCliente.Entidad + '.</p>' +
-
-
-                            '</div>' +
-                            '</div>';
-                        var infowindow = new google.maps.InfoWindow();
-
-                        google.maps.event.addListener(marker, "click", (function (marker, contentString, infowindow) {
-                            // !!! PROBLEM HERE
-                            return function (evt) {
-
-                                infowindow.setContent(contentString);
-                                infowindow.open(map, marker);
-                            }
-                        })(marker, contentString, infowindow));
-                        //markersClientes[i].marker.setListener('click', function () {
-                        //    infowindow.open(map, markersClientes[i].marker);
-                        //});
-
-                    }
-                },
-
-                error: function (ex) {
-                    alert('Failed to retrieve data.' + ex);
-                }
-            });
-        };
-
+       
 
         function geoLocation(map) {
             var infoWindow = new google.maps.InfoWindow({ map: map });
