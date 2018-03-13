@@ -62,9 +62,6 @@
             <div class="col-sm-12">
 
                 <div class="well">
-
-                    <legend>Cajero</legend>
-
                     <section id="widget-grid" class="">
 
                         <div class="row">
@@ -76,8 +73,7 @@
                                     <header draggable="true">
 
                                         <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
-
-                                        <h2>Seleccione el Cajero con click sobre el mapa</h2>
+                                        <h2>Click sobre el cajero para ver su descripci&oacute;n, click sobre el mapa para editar la ubicaci&oacute;n.</h2><br />
 
                                     </header>
 
@@ -129,7 +125,7 @@
 
                                         <section class="col col-lg-6">
 
-                                            <label>Codigo</label>
+                                            <label>@Html.DisplayNameFor(model => model.Codigo)</label>
 
                                             <label class="input">
 
@@ -157,6 +153,16 @@
                                         </section>
 
                                     </div>
+                                    <footer>
+
+                                        <button id="Editar" class="btn btn-primary">
+
+                                            Actualizar
+                                        </button>
+
+                                        @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
+
+                                    </footer>
 
                                 </form>
 
@@ -166,16 +172,7 @@
 
                     </section>
 
-                    <footer>
 
-                        <button  id="Editar" class="btn btn-primary">
-
-                            Actualizar
-                        </button>
-
-                        @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
-
-                    </footer>
 
                 </div>
 

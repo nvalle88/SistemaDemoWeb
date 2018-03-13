@@ -55,14 +55,14 @@
     </style>
 
     <div id="content">
-
+        <p></p>
+        @Html.ActionLink("Volver", "IndexCajeros", null, new { @class = "btn btn-default" })
+        <p></p>
         <div class="row">
 
             <div class="col-sm-12">
 
                 <div class="well">
-
-                    <legend>Cajero</legend>
 
                     <section id="widget-grid" class="">
 
@@ -76,7 +76,7 @@
 
                                         <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
 
-                                        <h2>Ubicacion del Cajero en el mapa</h2>
+                                        <h2>Ubicaci&oacute;n del Cajero en el mapa</h2>
 
                                     </header>
 
@@ -128,7 +128,7 @@
 
                                         <section class="col col-lg-6">
 
-                                            <label>Codigo:</label>
+                                            <label>@Html.DisplayNameFor(model=>model.Codigo):</label>
 
                                             <label class="input">
                                                 @Html.DisplayFor(model => model.Codigo)
@@ -150,19 +150,14 @@
                                     </div>
 
                                 </form>
-
+                                <footer></footer>
                             </article>
 
                         </div>
 
                     </section>
 
-                    <footer>
 
-
-                        @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
-
-                    </footer>
 
                 </div>
 

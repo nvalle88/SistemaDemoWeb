@@ -2,6 +2,7 @@ namespace CityParkWeb.ModelosDatos
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -21,6 +22,7 @@ namespace CityParkWeb.ModelosDatos
         public string Sector { get; set; }
 
         [StringLength(20)]
+        [DisplayName("Código")]
         public string Codigo { get; set; }
 
         [StringLength(60)]

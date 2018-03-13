@@ -15,7 +15,7 @@ namespace CityParkWeb.Controllers
         }
         public ActionResult Video()
         {
-            return View();
+            return Redirect("http://developmentds.eastus.cloudapp.azure.com:93/index.html");
         }
     }
 }

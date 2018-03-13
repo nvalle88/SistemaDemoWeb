@@ -10,7 +10,7 @@
 
     <p></p>
 
-    @Html.ActionLink("Nuevo Cajero", "Create", "", new { @class = "btn btn-default" })
+    @Html.ActionLink("Nuevo", "Create", "", new { @class = "btn btn-default" })
 
 
 
@@ -49,16 +49,11 @@
                                     <tr>
 
                                         <th data-class="expand">
-
-                                            <i class="icon-append fa fa-user"></i>
-
                                             @Html.DisplayNameFor(model => model.Codigo)
 
                                         </th>
 
                                         <th data-class="expand">
-
-                                            <i class="icon-append fa fa-home"></i>
 
                                             @Html.DisplayNameFor(model => model.Modelo)
 
