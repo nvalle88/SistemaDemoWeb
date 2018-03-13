@@ -16,7 +16,7 @@ namespace CityParkWeb
             routes.MapRoute("Default", "{controller}/{action}/{id}", new
             {
                 controller = "Login",
-                action = "Index",
+                action = "Video",
                 id = UrlParameter.Optional
             }).RouteHandler = new DashRouteHandler();
         }

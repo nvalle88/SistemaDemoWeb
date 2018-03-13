@@ -324,6 +324,7 @@
     <Content Include="Content\css\smartadmin-production.min.css" />
     <Content Include="Content\css\smartadmin-rtl.min.css" />
     <Content Include="Content\css\smartadmin-skins.min.css" />
+    <Content Include="Content\css\video.css" />
     <Content Include="Content\css\waitMe.css" />
     <Content Include="Content\css\waitMe.min.css" />
     <Content Include="Content\css\your_style.css" />
@@ -570,6 +571,7 @@
     <Content Include="Content\sound\voice_alert.mp3" />
     <Content Include="Content\sound\voice_off.mp3" />
     <Content Include="Content\sound\voice_on.mp3" />
+    <Content Include="Content\video\earth.mp4" />
     <Content Include="Content\xml\gmap\pins.xml" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1271,6 +1273,7 @@
     <Content Include="Views\CajerosCoperativa\Edit.cshtml" />
     <Content Include="Views\CajeroCoopPolicias\Index.cshtml" />
     <Content Include="Views\CajerosCoperativa\IndexCajeros.cshtml" />
+    <Content Include="Views\Login\Video.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
