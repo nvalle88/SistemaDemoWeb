@@ -57,6 +57,8 @@ namespace CityParkWeb.Controllers
             {
                 var a = new CajeroCoopPolicia
                 {
+                    Latitud = Convert.ToDouble(flatitud),
+                    Longitud = Convert.ToDouble(flongitud),
                     //Longitud = Convert.ToDouble( flongitud.Replace(".", ",")),
                     //Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
                     Codigo = nombreCajero,
@@ -104,6 +106,8 @@ namespace CityParkWeb.Controllers
                 var a = new CajeroCoopPolicia
                 {
                     Id = id,
+                    Latitud = Convert.ToDouble(flatitud),
+                    Longitud= Convert.ToDouble(flongitud),
                     //Longitud = Convert.ToDouble(flongitud.Replace(".", ",")),
                     //Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
                     Codigo = nombreCajero,
