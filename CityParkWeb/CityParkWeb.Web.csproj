@@ -356,6 +356,7 @@
     <Content Include="Content\img\avatars\sunny.png" />
     <Content Include="Content\img\blank.gif" />
     <Content Include="Content\img\border.png" />
+    <Content Include="Content\img\CityPark\CPNlogo.jpg" />
     <Content Include="Content\img\CityPark\icon.png" />
     <Content Include="Content\img\CityPark\ic_City_Park.png" />
     <Content Include="Content\img\CityPark\ic_CP.png" />
