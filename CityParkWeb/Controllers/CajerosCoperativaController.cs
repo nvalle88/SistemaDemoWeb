@@ -35,8 +35,8 @@ namespace CityParkWeb.Controllers
             {
                 return HttpNotFound();
             }
-            cajeroCoopPolicia.Latitud.ToString().Replace(",", ".");
-            cajeroCoopPolicia.Latitud.ToString().Replace(",", ".");
+            //cajeroCoopPolicia.Latitud.ToString().Replace(",", ".");
+            //cajeroCoopPolicia.Latitud.ToString().Replace(",", ".");
             return View(cajeroCoopPolicia);
         }
 
@@ -57,8 +57,8 @@ namespace CityParkWeb.Controllers
             {
                 var a = new CajeroCoopPolicia
                 {
-                    Longitud = Convert.ToDouble( flongitud.Replace(".", ",")),
-                    Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
+                    //Longitud = Convert.ToDouble( flongitud.Replace(".", ",")),
+                    //Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
                     Codigo = nombreCajero,
                     Modelo = modelocajero
                     
@@ -90,8 +90,8 @@ namespace CityParkWeb.Controllers
             {
                 return HttpNotFound();
             }
-            cajeroCoopPolicia.Latitud.ToString().Replace(",",".");
-            cajeroCoopPolicia.Latitud.ToString().Replace(",", ".");
+            //cajeroCoopPolicia.Latitud.ToString().Replace(",",".");
+            //cajeroCoopPolicia.Latitud.ToString().Replace(",", ".");
             return View(cajeroCoopPolicia);
         }
 
@@ -104,8 +104,8 @@ namespace CityParkWeb.Controllers
                 var a = new CajeroCoopPolicia
                 {
                     Id = id,
-                    Longitud = Convert.ToDouble(flongitud.Replace(".", ",")),
-                    Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
+                    //Longitud = Convert.ToDouble(flongitud.Replace(".", ",")),
+                    //Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
                     Codigo = nombreCajero,
                     Modelo = modelocajero
 
