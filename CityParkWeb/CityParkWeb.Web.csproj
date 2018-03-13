@@ -569,6 +569,7 @@
     <Content Include="Content\sound\voice_alert.mp3" />
     <Content Include="Content\sound\voice_off.mp3" />
     <Content Include="Content\sound\voice_on.mp3" />
+    <Content Include="Content\video\earth.mp4" />
     <Content Include="Content\xml\gmap\pins.xml" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
