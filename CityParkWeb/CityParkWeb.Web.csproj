@@ -338,6 +338,7 @@
     <Content Include="Content\images\Baja.png" />
     <Content Include="Content\images\BanRed.png" />
     <Content Include="Content\images\cajero.jpg" />
+    <Content Include="Content\images\Consumo.png" />
     <Content Include="Content\images\ic_policeman.png" />
     <Content Include="Content\images\Media.png" />
     <Content Include="Content\images\pin.png" />

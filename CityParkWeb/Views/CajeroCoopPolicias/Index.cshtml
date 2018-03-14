@@ -63,6 +63,32 @@
         z-index: 999999;
     }
 
+    #floating-panel2 {
+        position: absolute;
+        top: 50px;
+        left: 10%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: inherit 1px solid #999;
+        text-align: left;
+        /*font-family: 'Roboto','sans-serif';*/
+        line-height: 5px;
+        padding-left: 5px;
+    }
+
+    #floating-panel2 {
+        border-radius: 5px;
+        background-color: #fff;
+        border: 1px solid #999;
+        left: 10%;
+        padding: 5px;
+        position: absolute;
+        top: 80px;
+        z-index: 999999;
+
+    }
+
     .pac-container {
         z-index: 99999;
     }
@@ -110,6 +136,11 @@
                                                    value="true"
                                                    checked="checked" />
                                         </div>
+
+                                        <div id="floating-panel2">
+                                            <img src="../Content/images/Consumo.png" height="145" width="70" />                                         
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-sm-12">
 
@@ -405,6 +436,13 @@
 
         function toggleHeatmap() {
             heatmap.setMap(heatmap.getMap() ? null : map);
+            if (document.getElementById('floating-panel2').hidden == "") {
+                document.getElementById('floating-panel2').hidden = "hidden"; //para ocultar
+            }
+            else
+            { 
+                document.getElementById('floating-panel2').hidden = ""; //para mostrar
+            }
         }
 
         function changeGradient() {
