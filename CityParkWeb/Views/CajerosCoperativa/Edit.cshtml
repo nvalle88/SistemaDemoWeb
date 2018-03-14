@@ -7,188 +7,188 @@
 }
 
 
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.Latitud)
-    @Html.HiddenFor(model => model.Longitud)
+@Html.AntiForgeryToken()
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.Latitud, new { htmlAttributes = new { @class = "form-control", id = "elatitud" } })
+@Html.HiddenFor(model => model.Longitud, new { htmlAttributes = new { @class = "form-control", id = "elongitud" } })
 
 
-    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
 
-    <script src="~/Scripts/jquery-3.2.1.js"></script>
+<script src="~/Scripts/jquery-3.2.1.js"></script>
 
-    <script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
-    <script src="~/Scripts/jquery-1.11.1.js"></script>
+<script src="~/Scripts/jquery-1.11.1.js"></script>
 
-    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
+<script src="~/Scripts/jquery-1.11.1.min.js"></script>
 
-    <script src="~/Scripts/jquery-2.1.1.js"></script>
+<script src="~/Scripts/jquery-2.1.1.js"></script>
 
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
 
-    <link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.min.css" />
+<link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.min.css" />
 
-    <link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.css" />
+<link rel="stylesheet" href="~/Scripts/libs/waitMe/waitMe.css" />
 
-    <script src="~/Scripts/libs/waitMe/waitMe.min.js"></script>
+<script src="~/Scripts/libs/waitMe/waitMe.min.js"></script>
 
-    <script src="~/Scripts/Site.js"></script>
-
-
-    <style>
-
-        #map_container {
-            position: relative;
-        }
+<script src="~/Scripts/Site.js"></script>
 
 
+<style>
 
-        #map {
-            height: 0;
-            overflow: hidden;
-            padding-bottom: 30.25%;
-            padding-top: 10px;
-            position: relative;
-        }
-    </style>
+    #map_container {
+        position: relative;
+    }
 
-    <div id="content">
 
-        <div class="row">
 
-            <div class="col-sm-12">
+    #map {
+        height: 0;
+        overflow: hidden;
+        padding-bottom: 30.25%;
+        padding-top: 10px;
+        position: relative;
+    }
+</style>
 
-                <div class="well">
-                    <section id="widget-grid" class="">
+<div id="content">
 
-                        <div class="row">
+    <div class="row">
 
-                            <article class="col-sm-12 col-md-12 col-lg-12">
+        <div class="col-sm-12">
 
-                                <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-close="false" data-widget-custombutton="false">
+            <div class="well">
+                <section id="widget-grid" class="">
 
-                                    <header draggable="true">
+                    <div class="row">
 
-                                        <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
-                                        <h2>Click sobre el cajero para ver su descripci&oacute;n, click sobre el mapa para editar la ubicaci&oacute;n.</h2><br />
+                        <article class="col-sm-12 col-md-12 col-lg-12">
 
-                                    </header>
+                            <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-close="false" data-widget-custombutton="false">
 
-                                    <div>
+                                <header draggable="true">
 
-                                        <div class="jarviswidget-editbox">
+                                    <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+                                    <h2>Click sobre el cajero para ver su descripci&oacute;n, click sobre el mapa para editar la ubicaci&oacute;n.</h2><br />
 
-                                        </div>
+                                </header>
 
-                                        <div class="widget-body no-padding">
+                                <div>
 
-                                            <fieldset>
+                                    <div class="jarviswidget-editbox">
 
-                                                <div class="row">
+                                    </div>
 
-                                                    <div class="col-sm-12">
+                                    <div class="widget-body no-padding">
 
-                                                        <div id="map_container"></div>
+                                        <fieldset>
 
-                                                        <div id="map"></div>
+                                            <div class="row">
 
-                                                    </div>
+                                                <div class="col-sm-12">
+
+                                                    <div id="map_container"></div>
+
+                                                    <div id="map"></div>
 
                                                 </div>
 
-                                            </fieldset>
+                                            </div>
 
-                                        </div>
+                                        </fieldset>
 
                                     </div>
 
                                 </div>
 
-                            </article>
+                            </div>
 
-                        </div>
+                        </article>
 
-                    </section>
+                    </div>
 
-                    <section id="widget-grid1" class="">
+                </section>
 
-                        <div class="row">
+                <section id="widget-grid1" class="">
 
-                            <article class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="row">
 
-                                <form id="checkout-form" method="post" class="smart-form" novalidate="novalidate">
+                        <article class="col-sm-12 col-md-12 col-lg-12">
 
-                                    <div class="row">
+                            <form id="checkout-form" method="post" class="smart-form" novalidate="novalidate">
 
-                                        <section class="col col-lg-6">
+                                <div class="row">
 
-                                            <label>@Html.DisplayNameFor(model => model.Codigo)</label>
+                                    <section class="col col-lg-6">
 
-                                            <label class="input">
+                                        <label>@Html.DisplayNameFor(model => model.Codigo)</label>
 
-
-                                                @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre", @maxlength = 20 } })
-
-                                                @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
-
-                                            </label>
-
-                                        </section>
-                                        <section class="col col-lg-6">
-
-                                            <label>Modelo</label>
-
-                                            <label class="input">
+                                        <label class="input">
 
 
-                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo", @maxlength = 8 } })
+                                            @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre", @maxlength = 20 } })
 
-                                                @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+                                            @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
 
-                                            </label>
+                                        </label>
 
-                                        </section>
+                                    </section>
+                                    <section class="col col-lg-6">
 
-                                    </div>
+                                        <label>Modelo</label>
 
-
-                                </form>
-
-                            </article>
-
-                        </div>
-
-                    </section>
-                    <footer>
-
-                        <button id="Editar" class="btn btn-primary">
-
-                            Actualizar
-                        </button>
-
-                        @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
-
-                    </footer>
+                                        <label class="input">
 
 
-                </div>
+                                            @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo", @maxlength = 8 } })
 
+                                            @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+
+                                        </label>
+
+                                    </section>
+
+                                </div>
+
+
+                            </form>
+
+                        </article>
+
+                    </div>
+
+                </section>
+                <footer>
+
+                    <button id="Editar" class="btn btn-primary">
+
+                        Actualizar
+                    </button>
+
+                    @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
+
+                </footer>
 
 
             </div>
+
+
 
         </div>
 
     </div>
 
+</div>
 
 
 
 
-    @section pagespecific {
+
+@section pagespecific {
 
 
     <script>
@@ -259,12 +259,12 @@
 
         function placeMarkerAndPanTo(latLng, map) {
 
-                if (opcion == 2) {
+                if (opcion <= 2) {
                     marker.setPosition(latLng);
 
                 } else {
 
-                    opcion = 2;
+                    opcion <= 2;
                     var marker = new google.maps.Marker({
                         position: latLng,
                         map: map,
@@ -292,14 +292,63 @@
     </script>
 
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7xHSOffrWxVEax1kniS5-OxrWCuF4JU&libraries=drawing&callback=initMap"
-                async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7xHSOffrWxVEax1kniS5-OxrWCuF4JU&libraries=drawing&callback=initMap"
+            async defer></script>
 
-        <script type="text/javascript">
+    <script type="text/javascript">
             $("#Editar").click(function () {
 
                 var latitud = MyMarker.position.lat();
                 var longitud = MyMarker.position.lng();
+                if (latitud != "" && longitud != "")
+                {
+                    latitud = $("#elatitud").val();
+                    longitud =$("#elatitud").val();
+
+
+                    if ($("#nombre").val() != "" && $("#modelo").val()) {
+
+                        $.ajax({
+
+                            type: 'POST',
+
+                            url: href = '@Url.Action("Edit")',
+
+                            dataType: 'json',
+
+                            data: { flatitud: latitud, flongitud: longitud, nombreCajero: $("#nombre").val(), modelocajero: $("#modelo").val() },
+
+                            success: function (data) {
+
+                                if (data == true) {
+
+                                    location.href = '@Url.Action("IndexCajeros")';
+
+                                }
+
+                            }, complete: function (data) {
+
+                                $("#content").waitMe("hide");
+
+                            },
+
+                            error: function (ex) {
+
+                                alert('Failed to retrieve data.' + ex);
+
+                            }
+
+                        });
+
+                    } else {
+
+                        alert("Tiene que introducir el nombre del cajero ")
+
+                        return false;
+
+                    }
+                }
+                    else {
                 var flatitud;
                 var flongitud;
 
@@ -345,7 +394,11 @@
 
                 }
 
-            })
-        </script>
+                    }
+                }
+                
 
-    }
+            })
+    </script>
+
+}
