@@ -59,6 +59,7 @@ namespace CityParkWeb.Controllers
                 {
                     Latitud = Convert.ToDouble(flatitud),
                     Longitud = Convert.ToDouble(flongitud),
+                    Clasificacion="B",
                     //Longitud = Convert.ToDouble( flongitud.Replace(".", ",")),
                     //Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
                     Codigo = nombreCajero,
@@ -99,7 +100,7 @@ namespace CityParkWeb.Controllers
 
         
         [HttpPost]
-        public async Task<JsonResult> Edit(string nombreCajero, string modelocajero, string flatitud, string flongitud, int id)
+        public async Task<JsonResult> Edit(string clasificacion, string nombreCajero, string modelocajero, string flatitud, string flongitud, int id)
         {
             try
             {
@@ -111,7 +112,8 @@ namespace CityParkWeb.Controllers
                     //Longitud = Convert.ToDouble(flongitud.Replace(".", ",")),
                     //Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
                     Codigo = nombreCajero,
-                    Modelo = modelocajero
+                    Modelo = modelocajero,
+                    Clasificacion=clasificacion,
 
                 };
                 db.Entry(a).State = EntityState.Modified;

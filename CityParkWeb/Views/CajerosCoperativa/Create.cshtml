@@ -107,73 +107,75 @@
 
                             </div>
 
-                        </article>
-
-                    </div>
-
-                </section>
-
-                <section id="widget-grid1" class="">
-
-                    <div class="row">
-
-                        <article class="col-sm-12 col-md-12 col-lg-12">
-
-                            <form id="checkout-form" method="post" class="smart-form" novalidate="novalidate">
+                            <section id="widget-grid1" class="">
 
                                 <div class="row">
 
-                                    <section class="col col-lg-6">
+                                    <article class="col-sm-12 col-md-12 col-lg-12">
 
-                                        <label>@Html.DisplayNameFor(model=>model.Codigo)</label>
+                                        <form id="checkout-form" method="post" class="smart-form" novalidate="novalidate">
 
-                                        <label class="input">
+                                            <div class="row">
 
-                                            <i class="icon-prepend fa fa-map-marker"></i>
+                                                <section class="col col-lg-6">
 
-                                            @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre", @maxlength = 20 } })
+                                                    <label>@Html.DisplayNameFor(model => model.Codigo)</label>
 
-                                            @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
+                                                    <label class="input">
 
-                                        </label>
+                                                        <i class="icon-prepend fa fa-map-marker"></i>
 
-                                    </section>
-                                    <section class="col col-lg-6">
+                                                        @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control", id = "nombre", @maxlength = 20 } })
 
-                                        <label>Modelo</label>
+                                                        @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
 
-                                        <label class="input">
+                                                    </label>
 
-                                            <i class="icon-prepend fa fa-map-marker"></i>
+                                                </section>
+                                                <section class="col col-lg-6">
 
-                                            @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo", @maxlength = 8 } })
+                                                    <label>Modelo</label>
 
-                                            @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+                                                    <label class="input">
 
-                                        </label>
+                                                        <i class="icon-prepend fa fa-map-marker"></i>
 
-                                    </section>
+                                                        @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo", @maxlength = 8 } })
+
+                                                        @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+
+                                                    </label>
+
+                                                </section>
+
+                                            </div>
+
+                                        </form>
+
+                                    </article>
 
                                 </div>
-                                <footer>
 
-                                    <button type="submit" id="Create" class="btn btn-primary">
-
-                                        Insertar
-                                    </button>
-
-                                    @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
-
-                                </footer>
-                            </form>
+                            </section>
 
                         </article>
 
                     </div>
-   
+
                 </section>
 
-               
+
+
+                <footer>
+
+                    <button type="submit" id="Create" class="btn btn-primary">
+
+                        Insertar
+                    </button>
+
+                    @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
+
+                </footer>
 
             </div>
 
@@ -191,13 +193,9 @@
 
 @section pagespecific {
 
-
-
-
-
     <script>
         var opcion = 0;
-        var MyMarker;
+        var MyMarker=null;
         function geoLocation(map) {
             var infoWindow = new google.maps.InfoWindow({ map: map });
             if (navigator.geolocation) {
@@ -223,9 +221,9 @@
 
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
-                center: { lat: -0.225219, lng: -78.5248 }
+                center: { lat: -0.173689784, lng: -78.49555141 },
             });
-            geoLocation(map);
+           
 
             map.addListener('click', function (e) {
                 placeMarkerAndPanTo(e.latLng, map);
@@ -234,32 +232,32 @@
         }
 
         function placeMarkerAndPanTo(latLng, map) {
-            
-            if (opcion == 1) {
-                marker.setPosition(latLng);
 
-            } else {
+            var iconCPN =
+                {
+                    //con el icono
+                    url: "../Content/images/Baja.png", // url
+                    size: new google.maps.Size(48, 48),
+                    scaledSize: new google.maps.Size(48, 48), // scaled size
+                    origin: new google.maps.Point(0, 0), // origin
+                    anchor: new google.maps.Point(24, 48) // anchor
+                };
 
-                opcion = 1;
-                var icon1 =
-                    {
-                        //con el icono
-                        url: "../Content/images/Baja.png", // url
-                        size: new google.maps.Size(96, 96),
-                        scaledSize: new google.maps.Size(96, 96), // scaled size
-                        origin: new google.maps.Point(0, 0), // origin
-                        anchor: new google.maps.Point(48, 48) // anchor
-                    };
-                var marker = new google.maps.Marker({
-                    position: latLng,
-                    map: map,
-                    icon: icon1,
-                });
-                
-                MyMarker = marker;
-
-                map.panTo(latLng);
+           
+            if (MyMarker != null) {
+                MyMarker.setMap(null);
             }
+
+            var markerNuevo = new google.maps.Marker({
+                position: latLng,
+                icon: iconCPN,
+                map: map,
+            });
+
+            MyMarker = markerNuevo;
+
+            map.panTo(latLng);
+
         }
 
 
@@ -274,51 +272,58 @@
 
             $("#Create").click(function () {
 
-                var latitud = MyMarker.position.lat();
-                var longitud = MyMarker.position.lng();
-                var flatitud;
-                var flongitud;
+                if (MyMarker == null) {
+                    alert("Tiene que introducir la ubicación del cajero ");
+                    return false;
+                } else {
 
-                if ($("#nombre").val() != "" && $("#modelo").val() != "" && latitud != "" && longitud != "") {
 
-                    $.ajax({
+                    var latitud = MyMarker.position.lat();
+                    var longitud = MyMarker.position.lng();
+                    var flatitud;
+                    var flongitud;
 
-                        type: 'POST',
+                    if ($("#nombre").val() != "" && $("#modelo").val() != "" && latitud != "" && longitud != "") {
 
-                        url: href = '@Url.Action("Create")',
+                        $.ajax({
 
-                        dataType: 'json',
+                            type: 'POST',
 
-                        data: { flatitud: latitud, flongitud: longitud,nombreCajero: $("#nombre").val(), modelocajero: $("#modelo").val() },
+                            url: href = '@Url.Action("Create")',
 
-                        success: function (data) {
+                            dataType: 'json',
 
-                            if (data == true) {
+                            data: { flatitud: latitud, flongitud: longitud, nombreCajero: $("#nombre").val(), modelocajero: $("#modelo").val() },
 
-                                location.href = '@Url.Action("IndexCajeros")';
+                            success: function (data) {
+
+                                if (data == true) {
+
+                                    location.href = '@Url.Action("IndexCajeros")';
+
+                                }
+
+                            }, complete: function (data) {
+
+                                $("#content").waitMe("hide");
+
+                            },
+
+                            error: function (ex) {
+
+                                alert('Failed to retrieve data.' + ex);
 
                             }
 
-                        }, complete: function (data) {
+                        });
 
-                            $("#content").waitMe("hide");
+                    } else {
 
-                        },
-                        
-                        error: function (ex) {
+                        alert("Tiene que introducir el nombre del cajero ")
 
-                            alert('Failed to retrieve data.' + ex);
+                        return false;
 
-                        }
-
-                    });
-
-                } else {
-
-                    alert("Tiene que introducir el nombre del cajero ")
-
-                    return false;
-
+                    }
                 }
 
             })

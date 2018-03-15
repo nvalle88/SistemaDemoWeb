@@ -65,7 +65,7 @@
 
     #floating-panel2 {
         position: absolute;
-        top: 50px;
+        top: 100px;
         left: 10%;
         z-index: 5;
         background-color: #fff;
@@ -81,10 +81,10 @@
         border-radius: 5px;
         background-color: #fff;
         border: 1px solid #999;
-        left: 10%;
-        padding: 5px;
+        left: 1%;
+        padding: 10px;
         position: absolute;
-        top: 80px;
+        top: 190px;
         z-index: 999999;
 
     }
@@ -138,7 +138,9 @@
                                         </div>
 
                                         <div id="floating-panel2">
-                                            <img src="../Content/images/Consumo.png" height="145" width="70" />                                         
+                                            <label>Consumo medio</label><br />
+                                            <label>por habitante</label><br />
+                                            <img src="../Content/images/Consumo.png" height="145"  />
                                         </div>
 
                                         <div class="row">
@@ -400,8 +402,6 @@
                     alert('Failed to retrieve data.' + ex);
                 }
             });
-
-            geoLocation(map);
 
         }
 

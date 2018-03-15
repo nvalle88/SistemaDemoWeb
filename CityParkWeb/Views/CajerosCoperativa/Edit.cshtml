@@ -9,8 +9,10 @@
 
 @Html.AntiForgeryToken()
 @Html.HiddenFor(model => model.Id)
-@Html.HiddenFor(model => model.Latitud, new { htmlAttributes = new { @class = "form-control", id = "elatitud" } })
-@Html.HiddenFor(model => model.Longitud, new { htmlAttributes = new { @class = "form-control", id = "elongitud" } })
+@Html.HiddenFor(model => model.Clasificacion)
+@Html.HiddenFor(model => model.Latitud)
+@Html.HiddenFor(model => model.Longitud)
+
 
 
 <script src="~/Scripts/jquery-3.2.1.min.js"></script>
@@ -119,7 +121,7 @@
 
                         <article class="col-sm-12 col-md-12 col-lg-12">
 
-                            <form id="checkout-form" method="post" class="smart-form" novalidate="novalidate">
+                            <form id="checkout-form" class="smart-form" novalidate="novalidate">
 
                                 <div class="row">
 
@@ -163,13 +165,13 @@
 
                 </section>
                 <footer>
-
-                    <button id="Editar" class="btn btn-primary">
+                    <button id="EditarCajero" class="btn btn-primary">
 
                         Actualizar
                     </button>
 
                     @Html.ActionLink("Cancelar", "IndexCajeros", null, new { @class = "btn btn-default" })
+
 
                 </footer>
 
@@ -193,19 +195,21 @@
 
     <script>
 
-            var opcion = 1;
-            var MyMarker;
-
+        var opcion = 1;
+        var MyMarker = null;
+        var marker;
+        var iconCPN;
         function initMap() {
-            var icon1 =
+             iconCPN =
                 {
                     //con el icono
-                    url: "../../Content/images/Baja.png", // url
+
                     size: new google.maps.Size(96, 96),
                     scaledSize: new google.maps.Size(48, 48), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(24, 48) // anchor
                 };
+
 
             var lat1 = $("#Latitud").val().replace(",",".");
             var log = $("#Longitud").val().replace(",", ".");
@@ -216,11 +220,26 @@
                 center: myLatLng
             });
             //geoLocation(map);
+            var ClasificacionCPN = $("#Clasificacion").val();
+            switch (ClasificacionCPN) {
+                case "B":
+                    iconCPN.url = "../../Content/images/Baja.png"
+                    break
+                case "M":
+                    iconCPN.url = "../../Content/images/Media.png"
+                    break
+                case "A":
+                    iconCPN.url = "../../Content/images/Alta.png"
+                    break
 
-                    var marker = new google.maps.Marker({
+
+                default:
+            }
+
+                     marker = new google.maps.Marker({
                         position: myLatLng,
                         map: map,
-                        icon:icon1,
+                        icon:iconCPN,
                     });
                     var contentString = '<div id="content">' +
                         '<div id="siteNotice">' +
@@ -244,38 +263,30 @@
                         }
                     })(marker, contentString, infowindow));
 
-
-
                     map.addListener('click', function (e) {
                         placeMarkerAndPanTo(e.latLng, map);
                     });
-
-                    map.addListener('click', function (e) {
-                        placeMarkerAndPanTo(e.latLng, map);
-                    });
-
 
         }
 
         function placeMarkerAndPanTo(latLng, map) {
 
-                if (opcion <= 2) {
-                    marker.setPosition(latLng);
-
-                } else {
-
-                    opcion <= 2;
-                    var marker = new google.maps.Marker({
+            marker.setMap(null);
+            if (MyMarker != null) {
+                MyMarker.setMap(null);
+            }
+            
+                    var markerNuevo = new google.maps.Marker({
                         position: latLng,
+                        icon:iconCPN,
                         map: map,
                     });
-
-                    MyMarker = marker;
+                    
+                    MyMarker = markerNuevo;
 
                     map.panTo(latLng);
 
                 }
-            }
 
         var nombre;
         var modelo;
@@ -296,16 +307,21 @@
             async defer></script>
 
     <script type="text/javascript">
-            $("#Editar").click(function () {
 
-                var latitud = MyMarker.position.lat();
-                var longitud = MyMarker.position.lng();
-                if (latitud != "" && longitud != "")
-                {
-                    latitud = $("#elatitud").val();
-                    longitud =$("#elatitud").val();
+        $("#EditarCajero").click(function () {
 
 
+
+                if (MyMarker == null) {
+
+                    latitud = $("#Latitud").val();
+                    longitud = $("#Longitud").val();
+
+            }
+                else {
+                    var latitud = MyMarker.position.lat();
+                    var longitud = MyMarker.position.lng();
+                }
                     if ($("#nombre").val() != "" && $("#modelo").val()) {
 
                         $.ajax({
@@ -316,7 +332,7 @@
 
                             dataType: 'json',
 
-                            data: { flatitud: latitud, flongitud: longitud, nombreCajero: $("#nombre").val(), modelocajero: $("#modelo").val() },
+                            data: { clasificacion: $("#Clasificacion").val(), flatitud: latitud, flongitud: longitud, nombreCajero: $("#nombre").val(), modelocajero: $("#modelo").val() },
 
                             success: function (data) {
 
@@ -347,56 +363,7 @@
                         return false;
 
                     }
-                }
-                    else {
-                var flatitud;
-                var flongitud;
 
-                if ($("#nombre").val() != "" && $("#modelo").val() != "" && latitud != "" && longitud != "") {
-
-                    $.ajax({
-
-                        type: 'POST',
-
-                        url: href = '@Url.Action("Edit")',
-
-                        dataType: 'json',
-
-                        data: { flatitud: latitud, flongitud: longitud,nombreCajero: $("#nombre").val(), modelocajero: $("#modelo").val() },
-
-                        success: function (data) {
-
-                            if (data == true) {
-
-                                location.href = '@Url.Action("IndexCajeros")';
-
-                            }
-
-                        }, complete: function (data) {
-
-                            $("#content").waitMe("hide");
-
-                        },
-
-                        error: function (ex) {
-
-                            alert('Failed to retrieve data.' + ex);
-
-                        }
-
-                    });
-
-                } else {
-
-                    alert("Tiene que introducir el nombre del cajero ")
-
-                    return false;
-
-                }
-
-                    }
-                }
-                
 
             })
     </script>
