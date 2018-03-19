@@ -30,6 +30,7 @@
                 anchor: new google.maps.Point(0, 0) // anchor
             };
         markers = [];
+        arreglo = [];
         markersDelete = [];
 
         a = 0;

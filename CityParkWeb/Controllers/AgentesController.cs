@@ -40,7 +40,7 @@ namespace CityParkWeb.Controllers
 
         public async Task<JsonResult> GetClientes()
         {
-            var response = await ApiServicio.Listar<Cliente>(new Uri(WebApp.BaseAddress), "api/Clientes");
+            var response = await ApiServicio.Listar<ClienteRequest>(new Uri(WebApp.BaseAddress), "api/Clientes");
 
             if (response == null || response.Count == 0)
             {
