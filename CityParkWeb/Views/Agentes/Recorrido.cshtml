@@ -30,25 +30,48 @@
     <div class="alert alert-block alert-info">
         <a class="close" data-dismiss="alert" href="#">×</a>
         <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Informaci&oacute;n</h4>
-        <p>
+        <p class="text-justify">
             Usted puede observar la ruta del vendedor en el mapa as&iacute; como el detalle de cada segmento!
         </p>
     </div>
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Fecha)
+    <div class="row">
+        <div class="row col col-lg-6">
+            <form method="post" novalidate="novalidate">
+
+
+                <section class="col col-lg-5">
+                    <label>@Html.DisplayNameFor(model => model.Fecha)</label>
+                    <label class="input">
+                        <input name="Fecha" value="@Model.Fecha.ToShortDateString()" readonly="readonly" style="color:black" class="form-control datepicker" data-dateformat='dd/mm/yy' />
+                    </label>
+                </section>
+
+                <section class="col col-lg-2">
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <button type="submit" id="buscarRecorrido" class="btn btn-primary">
+                        <i class="fa fa-search fa-lg"></i>
+                    </button>
+                </section>
+            </form>
+        </div>
+
+    </div>
     <div class="row">
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
             <h4 class="page-title txt-color-blueDark">
-                    <i class="fa-fw fa fa-user"></i>
-                    Vendedor:
-                    <span>
-                        @Model.Nombre
-                    </span>
+                <i class="fa-fw fa fa-user"></i>
+                Vendedor:
+                <span>
+                    @Model.Nombre
+                </span>
             </h4>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
             <h4 class="page-title txt-color-blueDark">
                 <i class="fa-fw fa fa-dollar"></i>
-                Total de Ventas:  
+                Total de Ventas:
                 <span>
                     <label id="idventas"></label>
                 </span>
@@ -58,7 +81,7 @@
             <h4 class="page-title txt-color-blueDark">
                 <i class="fa-fw fa fa-calendar"></i>
                 <span>
-                   @{ var fecha = DateTime.Now.Date.ToLongDateString(); }
+                    @{ var fecha = DateTime.Now.Date.ToLongDateString(); }
                     @fecha
                 </span>
             </h4>
@@ -69,7 +92,7 @@
         </div>
     </div>
     <legend></legend>
-  
+
     <section id="widget-grid" class="">
         <div class="row">
             <article class="col-sm-12 col-md-12 col-lg-12">
@@ -115,35 +138,61 @@
             </article>
         </div>
     </section>
+   
 </div>
 @section pagespecific {
     <script type="text/javascript">
     </script>
     <script>
-    var arreglo = [];
+        var arreglo = [];
+        var oculto = 0;
         $(document).ready(function () {
+
+
+            $("#buscarRecorrido").click(function () {
+                $('#content').waitMe({
+                    effect: 'roundBounce',
+                    text: 'Procesando datos, por favor espere...',
+                    bg: 'rgba(255, 255, 255, 0.1)',
+                    color: '#118df9'
+                });
+            });
 
             if ($("#nombre").val() != "") {
                 $('#content').waitMe({
                     effect: 'roundBounce',
-                    text: 'Procesando datos, por favor espere...',
+                    text: 'Dibujando el mapa, por favor espere...',
                     bg: 'rgba(255, 255, 255, 0.7)',
-                    color: '#ef4c0c'
+                    color: '#118df9'
                 });
                 $.ajax({
                     type: 'POST',
                     url: '@Url.Action("RecorridoDiario")',
                     dataType: 'json',
-                    data: { id: $("#Id").val() },
+                    data: { id: $("#Id").val(), fechaActual: $("#Fecha").val() },
                     success: function (data) {
                         if (data == false) {
-                            alert("El vendedor no ha realizado ninguna visita el día de hoy...");
-                            window.location.href = '@Url.Action("Index")';
+                            alert("El vendedor no ha realizado ninguna visita en la fecha seleccionada...");
+                            $("#content").waitMe("hide");
+
+                            oculto = 0;
+                           @*// window.location.href = '@Url.Action("Index")';*@
+                        } else
+                        {
+                            arreglo = data;
+                            oculto = 1;
                         }
-                        arreglo = data;
+
 
                     }, complete: function (data) {
 
+                        if (oculto == 0) {
+                            $("#widget-grid").hide();
+
+                        } else
+                        {
+                            $("#widget-grid").show();
+                        }
 
 
                         var directionsService = new google.maps.DirectionsService;
@@ -167,8 +216,8 @@
 
                             //api map
                             var map = new google.maps.Map(document.getElementById('map'), {
-                                zoom: 6,
-                                center: { lat: lat_lng[0].lat, lng: lat_lng[0].lng }
+                                zoom: 12,
+                               
                             });
                             //add map
                             directionsDisplay.setMap(map);
@@ -218,6 +267,79 @@
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Hacia:</b> ' + route.legs[i].end_address + '<br>';
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Distancia recorrida:</b> ' + route.legs[i].distance.text + '<br>';
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Tiempo aproximado:</b> ' + route.legs[i].duration.text + '<br><br>';
+                                        if (arreglo[i].Informe != null) {
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbspInforme</b><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Comercial:</b><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Pendiente:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"><p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.PendienteComercial + '</p></div><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Solución:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"><p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.SolucionComercial + '</p></div><br>';
+
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Servicio:</b><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Pendiente:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"><p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.PendienteServicio + '</p></div><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Solución:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"> <p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.SolucionServicio + '</p></div><br><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Nuevo negocio:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"> <p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.NuevoNegocio + '</p></div><br><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Otros:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"> <p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.Otros + '</p></div><br><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Calificación:</b><br>';
+
+                                            if (arreglo[i].Informe.Calificacion == 0 || arreglo[i].Informe.Calificacion == null) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+
+                                            if (arreglo[i].Informe.Calificacion == 1) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+
+                                            if (arreglo[i].Informe.Calificacion == 2) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+
+                                            if (arreglo[i].Informe.Calificacion == 3) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+                                            if (arreglo[i].Informe.Calificacion == 4) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+                                            if (arreglo[i].Informe.Calificacion == 5) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                            }
+                                            summaryPanel.innerHTML += '<br>';
+                                            summaryPanel.innerHTML += "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<img src=\"http://developmentds.eastus.cloudapp.azure.com:85/simed/Content/Firmas/1.png\" width=\"50px\" height=\"50px\"> <br>";
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Firma del cliente</b><br>';
+                                        } 
                                         summaryPanel.innerHTML += ' <legend></legend>';
 
 
@@ -243,8 +365,8 @@
 
                             //api map
                             var map = new google.maps.Map(document.getElementById('map'), {
-                                zoom: 6,
-                                center: { lat: waypts[0].location.lat, lng: waypts[0].location.lng }
+                                zoom: 12,
+                               
                             });
                             //add map
                             directionsDisplay.setMap(map);
@@ -255,11 +377,13 @@
                                 origin: { lat: lat_lng[0].lat, lng: lat_lng[0].lng },//db waypoint start
                                 destination: { lat: lat_lng[lat_lng.length-1].lat, lng: lat_lng[lat_lng.length-1].lng },//db waypoint end
                                 waypoints: waypts,
+
                                 travelMode: google.maps.TravelMode.WALKING
                             }, function (response, status) {
                                 if (status === google.maps.DirectionsStatus.OK) {
-                                    directionsDisplay.setDirections(response);
 
+                                    directionsDisplay.setDirections(response);
+                           
                                     var step = 1;
 
                                     var route = response.routes[0];
@@ -282,7 +406,7 @@
                                         infowindow2.setPosition(route.legs[i].start_location);
                                         infowindow2.open(map);
 
-                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp  Segmento: ' + routeSegment + '</b><br>';
+                                        summaryPanel.innerHTML += '<b>&nbsp&nbsp  Visita: ' + routeSegment + '</b><br>';
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Cliente:</b> ' + arreglo[i].NombreUsuario + '<br>';
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Ruc:</b> ' + arreglo[i].Ruc + '<br>';
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Persona de contacto:</b> ' + arreglo[i].PersonaContacto + '<br>';
@@ -295,133 +419,92 @@
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Hacia:</b> ' + route.legs[i].end_address + '<br>';
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Distancia recorrida:</b> ' + route.legs[i].distance.text + '<br>';
                                         summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Tiempo aproximado:</b> ' + route.legs[i].duration.text + '<br><br>';
+
+                                        if (arreglo[i].Informe != null) {
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbspInforme</b><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Comercial:</b><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Pendiente:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"><p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.PendienteComercial + '</p></div><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Solución:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"><p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.SolucionComercial + '</p></div><br>';
+
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Servicio:</b><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Pendiente:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"><p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.PendienteServicio + '</p></div><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Solución:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"> <p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.SolucionServicio + '</p></div><br><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Nuevo negocio:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"> <p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.NuevoNegocio + '</p></div><br><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Otros:</b><br>';
+                                            summaryPanel.innerHTML += '<div class=" col col-lg-12"> <p class="text-justify">&nbsp&nbsp&nbsp&nbsp&nbsp' + arreglo[i].Informe.Otros + '</p></div><br><br>';
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Calificación:</b><br>';
+
+                                            if (arreglo[i].Informe.Calificacion == 0 || arreglo[i].Informe.Calificacion == null) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+
+                                            if (arreglo[i].Informe.Calificacion == 1) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+
+                                            if (arreglo[i].Informe.Calificacion == 2) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+
+                                            if (arreglo[i].Informe.Calificacion == 3) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+                                            if (arreglo[i].Informe.Calificacion == 4) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_outline.png\" width=\"50px\" height=\"50px\">";
+
+                                            }
+                                            if (arreglo[i].Informe.Calificacion == 5) {
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                                summaryPanel.innerHTML += "<img src=\"../../Content/img/estrella/star_selected.png\" width=\"50px\" height=\"50px\">";
+                                            }
+                                            summaryPanel.innerHTML += '<br>';
+                                            summaryPanel.innerHTML += "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<img src=\"http://developmentds.eastus.cloudapp.azure.com:85/simed/Content/Firmas/1.png\" width=\"50px\" height=\"50px\"> <br>";
+                                            summaryPanel.innerHTML += '<b>&nbsp&nbsp&nbsp&nbsp  Firma del cliente</b><br>';
+                                        } 
+                                        summaryPanel.innerHTML += ' <p>&nbsp&nbsp&nbsp&nbsp&nbsp</p>';
                                         summaryPanel.innerHTML += ' <legend></legend>';
-
-
 
 
                                     }
                                 } else {
                                     window.alert('Ha fallado la comunicació amb el mapa a causa de: ' + status);
                                 }
-                            });
+                                        });
                         }
 
-                         
 
-
-
-
-
-
-
-
-
-
-
-
-                        //var path;
-                        //var lat_lng = [];
-                        //var map = new google.maps.Map(document.getElementById('map'), {
-                        //    zoom: 15,
-                        //    center: { lat: -0.174343345485331, lng: -78.4831896311008 }
-                        //});
-
-                        //for (i = 0; i < arreglo.length; i++) {
-                        //    var a = arreglo[i].lat;
-                        //    var b = arreglo[i].lng;
-                        //    var Cordenadas = { lat: a, lng: b };
-                        //    lat_lng.push(Cordenadas);
-                        //}
-
-                        //var requestArray = [], renderArray = [];
-                        //var cur = 0;
-                        //var service = new google.maps.DirectionsService();
-                        //for (var i = 0; i < lat_lng.length - 1; i++) {
-                        //    var request = {
-                        //        origin: lat_lng[i],
-                        //        destination: lat_lng[i + 1],
-                        //        travelMode: 'DRIVING'
-                        //    };
-                        //    requestArray.push(request);
-                        //}
-
-                        ////So now we have all the requests created we will start with first request.
-
-                        //if (requestArray.length > 0) {
-                        //    service.route(requestArray[cur], directionResults);
-                        //}
-
-                        //function directionResults(result, status) {
-                        //    if (status == google.maps.DirectionsStatus.OK) {
-                        //        renderArray[cur] = new google.maps.DirectionsRenderer();
-                        //        renderArray[cur].setMap(map);
-                        //        renderArray[cur].setDirections(result);
-                        //    }
-                        //    cur++;
-                        //    if (cur < requestArray.length) {
-                        //        service.route(requestArray[cur], directionResults);
-                        //    }
-                        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        //var path;
-
-                        //var map = new google.maps.Map(document.getElementById('map'), {
-                        //    zoom: 15,
-                        //    center: { lat: -0.174343345485331, lng: -78.4831896311008 }
-                        //});
-
-                        //var Cord = [];
-                        //for (var i = 0; i < arreglo.length; i++) {
-                        //    var a = arreglo[i].lat;
-                        //    var b = arreglo[i].lng;
-                        //    var Cordenadas = { lat: a, lng: b };
-                        //    Cord.push(Cordenadas);
-
-                        //}
-                        //var waypts = [];
-                        //for (var i = 0; i < Cord.length; i++) {
-                        //    var start = Cord[i];
-                        //    var end = Cord[i+1];
-                        //    var directionsDisplay = new google.maps.DirectionsRenderer;
-                        //    var directionsService = new google.maps.DirectionsService;
-                        //    directionsDisplay.setMap(map);
-                        //    directionsService.route({
-                        //        origin: start,
-                        //        destination: end,
-
-                        //        travelMode: 'DRIVING'
-                        //    }, function (response, status) {
-                        //        if (status === 'OK') {
-                        //            directionsDisplay.setDirections(response);
-                        //        } else {
-                        //            window.alert('Directions request failed due to ' + status);
-                        //        }
-                        //    });
-                        //}
                             $("#content").waitMe("hide");
 
                     },
@@ -481,7 +564,7 @@
 
 
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7xHSOffrWxVEax1kniS5-OxrWCuF4JU&libraries=drawing&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7xHSOffrWxVEax1kniS5-OxrWCuF4JU&libraries=drawing"
               async defer></script>
 
 }

@@ -21,26 +21,13 @@ namespace CityParkWeb.Controllers
         }
 
 
-        public class PuntosRequest
-        {
-            public double lat { get; set; }
-            public double lng { get; set; }
-            public DateTime? Fecha { get; set; }
-            public string NombreUsuario { get; set; }
-            public string Telefono { get; set; }
-            public string Ruc { get; set; }
-            public string Direccion { get; set; }
-            public string PersonaContacto { get; set; }
-            public string Tipo { get; set; }
-            public double? Valor { get; set; }
-
-        }
+       
 
 
 
         public async Task<JsonResult> GetClientes()
         {
-            var response = await ApiServicio.Listar<ClienteRequest>(new Uri(WebApp.BaseAddress), "api/Clientes");
+            var response = await ApiServicio.Listar<ClienteRequest>(new Uri(WebApp.BaseAddress), "Simed/api/Clientes");
 
             if (response == null || response.Count == 0)
             {
@@ -50,62 +37,40 @@ namespace CityParkWeb.Controllers
             return Json(response);
         }
 
-        public async Task<JsonResult> RecorridoDiario(int Id)
+        public async Task<JsonResult> RecorridoDiario(int Id, string fechaActual)
         {
             if (Id <= 0)
             {
                 return Json(false);
             }
 
-            var sector = new Agente { Id = Id };
+            var fecha = new DateTime();
+            if (fechaActual == "")
+            {
+                fecha = DateTime.Now;
+            }
+            else
+            {
+             fecha = Convert.ToDateTime(fechaActual).Date;
+            }
+            
+            var visitaDiaria = new VisitaDiaria { IdAgente = Id, Fecha=fecha };
 
-            var response = await ApiServicio.Listar<Visita>(sector, new Uri(WebApp.BaseAddress), "api/Visitas/GetVisitasDiarias");
+            var response = await ApiServicio.Listar<PuntosRequest>(visitaDiaria, new Uri(WebApp.BaseAddress), "Simed/api/Visitas/GetVisitasDiarias");
 
             if (response == null || response.Count==0)
             {
                 return Json(false);
             }
-
-            var listaRequest = new List<PuntosRequest>();
-
-
-            var tipo = "";
-
-            foreach (var item in response)
-            {
-                if (item.Tipo==1)
-                {
-                    tipo = "Ventas";
-                }
-                if (item.Tipo == 2)
-                {
-                     tipo = "Visita";
-                }
-                listaRequest.Add(new PuntosRequest
-                { lat = (Double)item.Cliente.Lat,
-                  lng = (Double)item.Cliente.Lon ,
-                  Fecha =item.Fecha,
-                  NombreUsuario =item.Cliente.Nombre,
-                  Direccion=item.Cliente.Direccion,
-                  PersonaContacto=item.Cliente.PersonaContacto,
-                  Ruc=item.Cliente.Ruc,
-                  Telefono=item.Cliente.Telefono,
-                  Tipo=tipo,
-                  Valor=item.Valor,
-                  
-                  
-                });
-            }
-
-            return Json(listaRequest);
+            return Json(response);
         }
 
-        private async Task<List<Agente>> ObtenerAgentes()
+        private async Task<List<AgenteRequest>> ObtenerAgentes()
         {
 
-            var listaAgentes = await ApiServicio.Listar<Agente>(
+            var listaAgentes = await ApiServicio.Listar<AgenteRequest>(
                                                              new Uri(WebApp.BaseAddress),
-                                                             "api/Agentes/GetAgentes");
+                                                             "Simed/api/Agentes/GetAgentes");
             return listaAgentes;
         }
 
@@ -120,7 +85,6 @@ namespace CityParkWeb.Controllers
             return View(listaAgentes);
         }
 
-
         public async Task<ActionResult> Recorrido(int id)
         {
             if (id <= 0)
@@ -131,13 +95,37 @@ namespace CityParkWeb.Controllers
 
             var sectorRequest = await ApiServicio.ObtenerElementoAsync1<Response>(agente,
                                                               new Uri(WebApp.BaseAddress),
-                                                              "api/Agentes/GetAgente");
+                                                              "Simed/api/Agentes/GetAgente");
             if (!sectorRequest.IsSuccess)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             var result = JsonConvert.DeserializeObject<Agente>(sectorRequest.Result.ToString());
+            result.Fecha = DateTime.Now;
+            return View(result);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Recorrido(Agente agente)
+        {
+            if (agente.Id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var agenteRequest = new Agente { Id = agente.Id};
+
+            var sectorRequest = await ApiServicio.ObtenerElementoAsync1<Response>(agenteRequest,
+                                                              new Uri(WebApp.BaseAddress),
+                                                              "Simed/api/Agentes/GetAgente");
+            if (!sectorRequest.IsSuccess)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var result = JsonConvert.DeserializeObject<Agente>(sectorRequest.Result.ToString());
+            result.Fecha = agente.Fecha;
             return View(result);
         }
     }

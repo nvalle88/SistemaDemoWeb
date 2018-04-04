@@ -65,6 +65,8 @@
     <Compile Include="ModeloTranferencia\AgenteRequest.cs" />
     <Compile Include="ModeloTranferencia\ClienteRequest.cs" />
     <Compile Include="ModeloTranferencia\LoginRequest.cs" />
+    <Compile Include="ModeloTranferencia\PuntosRequest.cs" />
+    <Compile Include="ModeloTranferencia\VisitaDiaria.cs" />
     <Compile Include="Negocio\Administrador.cs" />
     <Compile Include="Negocio\Agente.cs" />
     <Compile Include="Negocio\AgenteCliente.cs" />

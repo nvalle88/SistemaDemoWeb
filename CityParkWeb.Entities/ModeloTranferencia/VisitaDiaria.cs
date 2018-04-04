@@ -5,9 +5,9 @@ using System.Web;
 
 namespace CityParkWeb.Entities.ModeloTranferencia
 {
-    public class AgenteRequest
+    public class VisitaDiaria
     {
-        public int Id { get; set; }
-        public string Nombre { get; set; }
+        public int IdAgente { get; set; }
+        public DateTime Fecha { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model List<CityParkWeb.Entities.Negocio.Agente>
+﻿@model List<CityParkWeb.Entities.ModeloTranferencia.AgenteRequest>
 
 @{
     ViewData["Title"] = "Index";
@@ -48,7 +48,7 @@
                                                 @Html.DisplayFor(modelItem => item.Nombre)
                                             </td>
                                             <td>
-                                                @Html.ActionLink("Detalle", "Recorrido", new { id = item.Id })
+                                                @Html.ActionLink("Detalle", "Recorrido", new { id = item.Id})
                                             </td>
                                         </tr>
                                     }

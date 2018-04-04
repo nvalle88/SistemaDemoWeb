@@ -1,6 +1,8 @@
 namespace CityParkWeb.Entities.Negocio
 {
+    using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,6 +26,10 @@ namespace CityParkWeb.Entities.Negocio
 
         [StringLength(50)]
         public string Nombre { get; set; }
+
+        [NotMapped]
+        [DisplayName("Fecha de consulta")]
+        public DateTime Fecha { get; set; }
 
         public virtual Supervisor Supervisor { get; set; }
 
