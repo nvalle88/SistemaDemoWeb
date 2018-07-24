@@ -121,8 +121,8 @@
                                             <label>Mapa de Calor:</label>
                                             <input onclick="toggleHeatmap()"
                                                    type="checkbox"
-                                                   value="true"
-                                                   checked="checked" />
+                                                   value="false"
+                                                    />
                                             <br />
                                             <label>Cajeros CPN:</label>&nbsp;&nbsp;
                                             <input onclick="OcultarCPN()"
@@ -134,7 +134,7 @@
                                             <input onclick="OcultarCompetencia()"
                                                    type="checkbox"
                                                    value="true"
-                                                   checked="checked" />
+                                                    />
                                         </div>
 
                                         <div id="floating-panel2">
@@ -179,18 +179,13 @@
         ClienteCPN = [];
         ClienteBanRed = [];
 
+
+
         var map;
         var heatmap;
         function initMap() {
 
-            var iconCompetencia =
-                {
-                    url: "../Content/images/BanRed.png", // url
-                    size: new google.maps.Size(48, 48),
-                    scaledSize: new google.maps.Size(48, 48), // scaled size
-                    origin: new google.maps.Point(0, 0), // origin
-                    anchor: new google.maps.Point(24, 48) // anchor
-                };
+            
 
             var iconCPN =
                 {
@@ -232,6 +227,7 @@
                         dissipating: true
                     });
                     heatmap.setMap(map);
+                    heatmap.setMap(heatmap.getMap() ? null : map);
                 },
 
                 error: function (ex) {
@@ -239,6 +235,7 @@
                 }
             });
 
+            
             //Cajeros CNP
             $.ajax({
                 type: 'POST',
@@ -249,7 +246,7 @@
                     arreglo = data;
 
                 }, complete: function (data) {
-
+                
                     for (var i = 0; i < arreglo.length; i++) {
 
                         var marker;
@@ -268,13 +265,16 @@
                             }
                         switch (arreglo[i].Clasificacion) {
                             case "B":
-                                iconCPN.url = "../Content/images/Baja.png"
+                                iconCPN.url = "../Content/images/Alta.png"
                                 break
                             case "M":
                                 iconCPN.url = "../Content/images/Media.png"
                                 break
                             case "A":
-                                iconCPN.url = "../Content/images/Alta.png"
+                                iconCPN.url = "../Content/images/Baja.png"
+                                break
+                            case "N":
+                                iconCPN.url = "../Content/images/Nuevo.png"
                                 break
 
 
@@ -326,6 +326,7 @@
                         //});
 
                     }
+
                 },
 
                 error: function (ex) {
@@ -334,7 +335,98 @@
             });
 
             //Cajeros Competencia
-            $.ajax({
+           if (document.getElementById('floating-panel2').hidden == "") {
+                
+                document.getElementById('floating-panel2').hidden = "hidden"; //para ocultar
+            }
+
+        }
+
+
+
+        function geoLocation(map) {
+            var infoWindow = new google.maps.InfoWindow({ map: map });
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Posici&oacute;n actual');
+                    map.setCenter(pos);
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+        };
+
+        function toggleHeatmap() {
+            mostrarLoadingPanel("content","");
+            heatmap.setMap(heatmap.getMap() ? null : map);
+            if (document.getElementById('floating-panel2').hidden == "") {
+                document.getElementById('floating-panel2').hidden = "hidden"; //para ocultar
+            }
+            else
+            { 
+                document.getElementById('floating-panel2').hidden = ""; //para mostrar
+            }
+             $("#content").waitMe("hide");
+
+        }
+
+        function changeGradient() {
+            var gradient = [
+                'rgba(0, 255, 255, 0)',
+                'rgba(0, 255, 255, 1)',
+                'rgba(0, 191, 255, 1)',
+                'rgba(0, 127, 255, 1)',
+                'rgba(0, 63, 255, 1)',
+                'rgba(0, 0, 255, 1)',
+                'rgba(0, 0, 223, 1)',
+                'rgba(0, 0, 191, 1)',
+                'rgba(0, 0, 159, 1)',
+                'rgba(0, 0, 127, 1)',
+                'rgba(63, 0, 91, 1)',
+                'rgba(127, 0, 63, 1)',
+                'rgba(191, 0, 31, 1)',
+                'rgba(255, 0, 0, 1)'
+            ]
+            heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+        }
+
+        function changeRadius() {
+            heatmap.set('radius', heatmap.get('radius') ? null : 20);
+        }
+
+        function changeOpacity() {
+            heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+        }
+
+        function OcultarCompetencia() {
+            
+            if (esVisibleCompetencia == true) {
+                
+            mostrarLoadingPanel("content","");
+                var iconCompetencia =
+                {
+                    url: "../Content/images/BanRed.png", // url
+                    size: new google.maps.Size(48, 48),
+                    scaledSize: new google.maps.Size(48, 48), // scaled size
+                    origin: new google.maps.Point(0, 0), // origin
+                    anchor: new google.maps.Point(24, 48) // anchor
+                };
+                 $.ajax({
                 type: 'POST',
                 url: '../CajeroCoopPolicias/GetCajerosBanRed',
                 dataType: 'json',
@@ -396,99 +488,27 @@
                         //});
 
                     }
+                    $("#content").waitMe("hide");
                 },
 
                 error: function (ex) {
                     alert('Failed to retrieve data.' + ex);
                 }
             });
-
-        }
-
-
-
-        function geoLocation(map) {
-            var infoWindow = new google.maps.InfoWindow({ map: map });
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-
-                    infoWindow.setPosition(pos);
-                    infoWindow.setContent('Posici&oacute;n actual');
-                    map.setCenter(pos);
-                }, function () {
-                    handleLocationError(true, infoWindow, map.getCenter());
-                });
-            } else {
-                // Browser doesn't support Geolocation
-                handleLocationError(false, infoWindow, map.getCenter());
-            }
-        }
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(browserHasGeolocation ?
-                'Error: The Geolocation service failed.' :
-                'Error: Your browser doesn\'t support geolocation.');
-        };
-
-        function toggleHeatmap() {
-            heatmap.setMap(heatmap.getMap() ? null : map);
-            if (document.getElementById('floating-panel2').hidden == "") {
-                document.getElementById('floating-panel2').hidden = "hidden"; //para ocultar
-            }
-            else
-            { 
-                document.getElementById('floating-panel2').hidden = ""; //para mostrar
-            }
-        }
-
-        function changeGradient() {
-            var gradient = [
-                'rgba(0, 255, 255, 0)',
-                'rgba(0, 255, 255, 1)',
-                'rgba(0, 191, 255, 1)',
-                'rgba(0, 127, 255, 1)',
-                'rgba(0, 63, 255, 1)',
-                'rgba(0, 0, 255, 1)',
-                'rgba(0, 0, 223, 1)',
-                'rgba(0, 0, 191, 1)',
-                'rgba(0, 0, 159, 1)',
-                'rgba(0, 0, 127, 1)',
-                'rgba(63, 0, 91, 1)',
-                'rgba(127, 0, 63, 1)',
-                'rgba(191, 0, 31, 1)',
-                'rgba(255, 0, 0, 1)'
-            ]
-            heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-        }
-
-        function changeRadius() {
-            heatmap.set('radius', heatmap.get('radius') ? null : 20);
-        }
-
-        function changeOpacity() {
-            heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-        }
-
-        function OcultarCompetencia() {
-            if (esVisibleCompetencia == false) {
-                setMapOnAllCompetencia(map);
-                esVisibleCompetencia = true;
-
-            } else { setMapOnAllCompetencia(null); }
+                esVisibleCompetencia = false;
+               
+            } else { setMapOnAllCompetencia(null);esVisibleCompetencia = true; }
 
         }
 
         function OcultarCPN() {
+            mostrarLoadingPanel("content","");
             if (esVisibleCPN == false) {
                 setMapOnAllCPN(map);
                 esVisibleCPN = true;
 
             } else { setMapOnAllCPN(null); }
-
+            $("#content").waitMe("hide");
         }
 
         function setMapOnAllCompetencia(map) {

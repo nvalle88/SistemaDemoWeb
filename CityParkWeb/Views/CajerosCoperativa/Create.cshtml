@@ -140,7 +140,7 @@
 
                                                         <i class="icon-prepend fa fa-map-marker"></i>
 
-                                                        @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo", @maxlength = 8 } })
+                                                        @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", id = "modelo", @maxlength = 60 } })
 
                                                         @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
 
@@ -236,7 +236,7 @@
             var iconCPN =
                 {
                     //con el icono
-                    url: "../Content/images/Baja.png", // url
+                    url: "../Content/images/Nuevo.png", // url
                     size: new google.maps.Size(48, 48),
                     scaledSize: new google.maps.Size(48, 48), // scaled size
                     origin: new google.maps.Point(0, 0), // origin

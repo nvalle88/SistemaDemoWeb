@@ -56,8 +56,14 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\MicosoftReportViewerWebForms_v11.1.0.1\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ReportViewerForMvc, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReportViewerForMvc.1.0.1\lib\net45\ReportViewerForMvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -212,6 +218,7 @@
     <Compile Include="Controllers\CajeroCoopPoliciasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -221,10 +228,12 @@
     <Compile Include="ModelosDatos\MapaConcentracion.cs" />
     <Compile Include="ModelosDatos\Model.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Credenciales.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utiles\Constantes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Landing\Content\color\default.css" />
@@ -341,6 +350,7 @@
     <Content Include="Content\images\Consumo.png" />
     <Content Include="Content\images\ic_policeman.png" />
     <Content Include="Content\images\Media.png" />
+    <Content Include="Content\images\Nuevo.png" />
     <Content Include="Content\images\pin.png" />
     <Content Include="Content\images\trx_alta.png" />
     <Content Include="Content\images\trx_media.png" />
@@ -579,6 +589,7 @@
     <Content Include="Global.asax" />
     <Content Include="img\logo.png" />
     <Content Include="img\logoCPN.png" />
+    <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="Scripts\app.config.js" />
     <Content Include="Scripts\app.min.js" />
     <Content Include="Scripts\bootstrap.js" />

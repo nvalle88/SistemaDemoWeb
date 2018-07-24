@@ -59,6 +59,23 @@
 
                                         </th>
 
+                                        <th data-class="expand">
+
+                                            @Html.DisplayNameFor(model => model.Provincia)
+
+                                        </th>
+                                         <th data-class="expand">
+
+                                            Cant&oacute;n
+
+                                        </th>
+                                         <th data-class="expand">
+
+                                           Direcci&oacute;n
+
+                                        </th>
+
+
                                         <th>
 
                                             <i class="icon-append fa fa-cog"></i>
@@ -88,6 +105,22 @@
                                             <td>
 
                                                 @Html.DisplayFor(modelItem => item.Modelo)
+
+                                            </td>
+                                            <td>
+
+                                                @Html.DisplayFor(modelItem => item.Provincia)
+
+                                            </td>
+                                            <td>
+
+                                                @Html.DisplayFor(modelItem => item.Canton)
+
+                                            </td>
+                                             <td>
+                                                
+                                                @Html.DisplayFor(modelItem => item.Direccion)
+                                            
 
                                             </td>
 

@@ -59,7 +59,7 @@ namespace CityParkWeb.Controllers
                 {
                     Latitud = Convert.ToDouble(flatitud),
                     Longitud = Convert.ToDouble(flongitud),
-                    Clasificacion="B",
+                    Clasificacion ="N",
                     //Longitud = Convert.ToDouble( flongitud.Replace(".", ",")),
                     //Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
                     Codigo = nombreCajero,
@@ -104,19 +104,15 @@ namespace CityParkWeb.Controllers
         {
             try
             {
-                var a = new CajeroCoopPolicia
-                {
-                    Id = id,
-                    Latitud = Convert.ToDouble(flatitud),
-                    Longitud= Convert.ToDouble(flongitud),
-                    //Longitud = Convert.ToDouble(flongitud.Replace(".", ",")),
-                    //Latitud = Convert.ToDouble(flatitud.Replace(".", ",")),
-                    Codigo = nombreCajero,
-                    Modelo = modelocajero,
-                    Clasificacion=clasificacion,
-
-                };
-                db.Entry(a).State = EntityState.Modified;
+                var cajeroactualizar =await db.CajeroCoopPolicia.Where(x => x.Id == id).FirstOrDefaultAsync();
+                cajeroactualizar.Id = id;
+                cajeroactualizar.Latitud = Convert.ToDouble(flatitud);
+                cajeroactualizar.Longitud = Convert.ToDouble(flongitud);
+                //cajeroactualizar.Longitud = Convert.ToDouble(flongitud.Replace(".", ","));
+                //cajeroactualizar.Latitud = Convert.ToDouble(flatitud.Replace(".", ","));
+                cajeroactualizar.Codigo = nombreCajero;
+                cajeroactualizar.Modelo = modelocajero;
+                db.Entry(cajeroactualizar).State = EntityState.Modified;
                 db.SaveChanges();
                 return Json(true);
 

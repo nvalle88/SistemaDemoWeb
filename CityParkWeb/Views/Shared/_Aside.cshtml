@@ -19,7 +19,7 @@
 
         <ul>
 
-            <li  @Html.RouteIf("Agentes", "active" )">
+            <li @Html.RouteIf("Agentes", "active") ">
                 <a href="#"><i class="fa fa-lg fa-fw fa-fax txt-color-blue"></i> <span class="menu-item-parent">Cajeros</span></a>
                 <ul>
                     <li class="@Html.RouteIf("CajeroCoopPolicias", "active")">
@@ -27,6 +27,14 @@
                     </li>
                     <li class="@Html.RouteIf("CajerosCoperativa", "active")">
                         <a href="@Url.Action("IndexCajeros", "CajerosCoperativa")" title="Gestión de agentes [Insertar/Actualizar/Eliminar]"><i class="fa fa-lg fa-fw  fa-th  txt-color-blue "></i> <span class="menu-item-parent">Gestionar</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li @Html.RouteIf("Reports", "active")">
+                <a href="#"><i class="fa fa-lg fa-fw fa-search txt-color-blue"></i> <span class="menu-item-parent">Reportes</span></a>
+                <ul>
+                    <li class="@Html.RouteIf("Reports", "active")">
+                        <a href="@Url.Action("Report", "Reports")" title="Mapa"><i class="fa fa-lg fa-fw fa-file-text-o txt-color-blue"></i> <span class="menu-item-parent">Reporte cajeros</span></a>
                     </li>
                 </ul>
             </li>

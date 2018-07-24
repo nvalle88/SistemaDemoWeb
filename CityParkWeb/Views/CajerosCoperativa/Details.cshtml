@@ -127,7 +127,7 @@
 
                                     <div class="row">
 
-                                        <section class="col col-lg-6">
+                                        <section class="col col-lg-3">
 
                                             <label>@Html.DisplayNameFor(model=>model.Codigo):</label>
 
@@ -136,7 +136,7 @@
                                             </label>
 
                                         </section>
-                                        <section class="col col-lg-6">
+                                        <section class="col col-lg-3">
 
                                             <label>Modelo:</label>
 
@@ -148,6 +148,44 @@
 
                                         </section>
 
+                                    
+
+                                
+
+                                        <section class="col col-lg-3">
+
+                                            <label>Provincia:</label>
+
+                                            <label class="input">
+                                                @Html.DisplayFor(model => model.Provincia)
+                                            </label>
+
+                                        </section>
+                                        <section class="col col-lg-3">
+
+                                            <label>Cant&oacute;n:</label>
+
+                                            <label class="input">
+
+                                                @Html.DisplayFor(model => model.Canton)
+
+                                            </label>
+
+                                        </section>
+                                        </div>
+
+                                    <div class="row">
+                                    <br>
+
+                                        <section class="col col-lg-12">
+
+                                            <label>Direcci&oacute;n:</label>
+
+                                            <label class="input">
+                                                @Html.DisplayFor(model => model.Direccion)
+                                            </label>
+
+                                        </section>
                                     </div>
 
                                 </form>
@@ -223,13 +261,16 @@
             var ClasificacionCPN = $("#Clasificacion").val();
             switch (ClasificacionCPN) {
                 case "B":
-                    iconCPN.url = "../../Content/images/Baja.png"
+                    iconCPN.url = "../../Content/images/Alta.png"
                     break
                 case "M":
                     iconCPN.url = "../../Content/images/Media.png"
                     break
                 case "A":
-                    iconCPN.url = "../../Content/images/Alta.png"
+                    iconCPN.url = "../../Content/images/Baja.png"
+                    break
+                case "N":
+                    iconCPN.url = "../../Content/images/Nuevo.png"
                     break
 
 

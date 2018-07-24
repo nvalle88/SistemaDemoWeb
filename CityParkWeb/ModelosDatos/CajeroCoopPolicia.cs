@@ -12,29 +12,29 @@ namespace CityParkWeb.ModelosDatos
     {
         public string Clasificacion { get; set; }
 
-        [StringLength(20)]
+        [StringLength(80)]
         public string Provincia { get; set; }
 
-        [StringLength(20)]
+        [StringLength(80)]
         public string Canton { get; set; }
 
-        [StringLength(20)]
+        [StringLength(80)]
         public string Sector { get; set; }
 
         [StringLength(20)]
         [DisplayName("Código")]
         public string Codigo { get; set; }
 
-        [StringLength(60)]
+        [StringLength(80)]
         public string Ubicación { get; set; }
 
-        [StringLength(80)]
+        [StringLength(500)]
         public string Direccion { get; set; }
 
-        [StringLength(8)]
+        [StringLength(60)]
         public string Tipo { get; set; }
 
-        [StringLength(8)]
+        [StringLength(60)]
         public string Modelo { get; set; }
 
         public double? Latitud { get; set; }
